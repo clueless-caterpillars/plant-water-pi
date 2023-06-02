@@ -20,7 +20,7 @@ Mobile app integration: The irrigation system can be monitored and controlled re
 
 ![proposed UI](./img/plant-waterer-interface-wireframe.png)
 
-![database schema](./img/database-schema.png)
+![database schema](./img/database-revised.png)
 
 ## Task Tracker Board (Meistertask)
 
