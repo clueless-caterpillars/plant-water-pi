@@ -1,6 +1,20 @@
-# plant-water-pi
+# PlantPal
+
+## A cloud-based mobile app that takes care of your plant babies while you're away
 
 This project aims to create an automatic irrigation system using Raspberry Pi to detect soil moisture levels and control watering accordingly. Additionally, it provides a mobile app interface to monitor and control the irrigation system remotely.
+
+## User Stories
+
+As a user, I want to be able to water my plant while I'm on vacation
+
+As a user, I want to be able to check the temperature and soil moisture of my plant
+
+As a user, I want to review the watering history for my plant for the past week
+
+As a user, I want to review the temperature and moisture history for my plant for the past week
+
+As a user, I want my plants to get automatically watered after a certain time if I forget (stretch goal)
 
 ## Features
 
