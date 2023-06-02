@@ -1,10 +1,17 @@
 # plant-water-pi
 
-![data flow whiteboard](./
+## Whiteboards
+
+![data flow whiteboard](./img/data-flow-uml.png)
+
+![aws greengrass whiteboard](./img/AWS-greengrass-Pi-S3-diagram.png)
+
+![raspberry pi whiteboard](./img/raspberry-pi-pin-diagram.png)
 
 This project aims to create an automatic irrigation system using Raspberry Pi to detect soil moisture levels and control watering accordingly. Additionally, it provides a mobile app interface to monitor and control the irrigation system remotely.
 
 ## Features
+
 Soil moisture detection: The Raspberry Pi is equipped with a soil moisture sensor that measures the moisture content of the soil.
 Automatic watering: Based on the soil moisture readings, the system automatically triggers the irrigation system to water the plants when the moisture level falls below a certain threshold.
 Mobile app integration: The irrigation system can be monitored and controlled remotely using a mobile app. The app provides real-time data on soil moisture levels and allows users to adjust irrigation settings as needed.
@@ -12,6 +19,7 @@ Hardware Requirements
 To set up the project, you will need the following hardware components:
 
 ## Raspberry Pi (any model with GPIO pins)
+
 Soil moisture sensor
 Relay module
 Water pump/solenoid valve
@@ -20,6 +28,7 @@ Power supply for Raspberry Pi and water pump/valve
 Optional: Enclosure for Raspberry Pi and sensor
 
 ## Software Requirements
+
 The following software components are required for this project:
 
 Raspbian OS or any other compatible operating system for Raspberry Pi
@@ -66,7 +75,8 @@ If you encounter any issues or errors during the installation or usage of the pr
 5. If the problem persists, consult the project's documentation, seek assistance from the community or raise an issue on the GitHub repository for further support.
 
 ## License
-This project is licensed under
+
+This project is licensed under the MIT License
 
 ### Team Members
 
