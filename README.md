@@ -69,7 +69,7 @@ React Native
 1. Connect the soil moisture sensor to the Raspberry Pi's GPIO pins as per the sensor's documentation.
 2. Connect the relay module to the Raspberry Pi's GPIO pins, ensuring proper wiring between the relay, water pump/valve, and power supply.
 3. Install the required dependencies and libraries on the Raspberry Pi by following the instructions provided by the sensor and relay module manufacturers.
-4. Clone or download the project repository from GitHub: [insert GitHub link]
+4. Clone or download the project repository from GitHub
 5. Set up the mobile app development environment following the framework's documentation and project-specific instructions.
 6. Install the necessary dependencies for the mobile app by running the appropriate package manager commands.
 7. Configure the mobile app to connect to the Raspberry Pi's IP address or domain name.
