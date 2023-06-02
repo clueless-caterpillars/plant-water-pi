@@ -1,5 +1,7 @@
 # plant-water-pi
 
+![data flow whiteboard](./
+
 This project aims to create an automatic irrigation system using Raspberry Pi to detect soil moisture levels and control watering accordingly. Additionally, it provides a mobile app interface to monitor and control the irrigation system remotely.
 
 ## Features
