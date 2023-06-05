@@ -9,8 +9,8 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
-        {/* <Home /> */}
-        <Plant />
+        <Home />
+        {/* <Plant /> */}
       </View>      
     </NativeBaseProvider>
   );

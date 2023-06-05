@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Progress, Box, Center } from 'native-base';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
+import styles from "../../styles";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
@@ -29,7 +30,7 @@ function Plant(){
   }
 
   return(
-    <View style={styles.container}>
+    <View style={styles.mainContainer}>
       <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
       <LinearGradient 
         colors={['rgba(126, 216, 87, 0.6)', 'rgba(0, 151, 178, 0.6)']}
@@ -110,74 +111,7 @@ function Plant(){
 
     </View>
   )
-
 }
 
-const styles =  StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%'
-  },
-  componentContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    // borderColor: 'white',
-    // borderWidth: 5
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 24
-  },
-  gradient: {
-    flex: 1,
-    zIndex: 0,
-    position: "absolute",
-    width: '100%',
-    height: '100%',
-  },
-  bgImage: {
-    flex: 1,
-    zIndex: -1,
-    position: "absolute",
-    width: '100%',
-    height: '100%',
-  },
-  name: {
-    fontSize: 48,
-    textAlign: 'center',
-    justifyContent: 'center',
-    color: 'white',
-  },
-  label: {
-    fontSize: 24,
-    color: 'white'
-  },
-  progress: {
-    marginBottom: 50
-  },
-  buttons: {
-    width: 250,
-    height: 50,
-    backgroundColor: 'rgba(0, 0, 0, 0.0)',
-    borderRadius: 100,
-    borderWidth: 2,
-    borderColor: 'white',
-    justifyContent: 'center',
-    margin: 5
-  },
-  waterNow: {
-    width: 250,
-    height: 50,
-    backgroundColor: '#7ed957',
-    borderRadius: 100,
-    borderWidth: 2,
-    borderColor: 'white',
-    justifyContent: 'center',
-    margin: 5
-  },
-})
 
 export default Plant;
