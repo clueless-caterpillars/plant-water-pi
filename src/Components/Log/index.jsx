@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Progress, Box, Center } from 'native-base';
 import { useFonts, Montserrat_400Regular, Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
-import { Table, Row, Rows } from "react-native-table-component";
+import { Table, Row} from "react-native-table-component";
 import styles from "../../styles";
 
 const bgImage = require('../../../assets/homebg.jpg');

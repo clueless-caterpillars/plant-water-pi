@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import React from "react";
+import { Text, View, Pressable, ScrollView } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Progress, Box, Center } from 'native-base';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import styles from "../../styles";
 
