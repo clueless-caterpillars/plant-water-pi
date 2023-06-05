@@ -58,6 +58,7 @@ export default styles =  StyleSheet.create({
   subtitle: {
     // flex: 1,
     fontSize: 36,
+    fontFamily: 'Montserrat_400Regular',
     textAlign: 'center',
     color: 'white',
   }, 
@@ -71,7 +72,6 @@ export default styles =  StyleSheet.create({
   name: {
     fontSize: 48,
     fontFamily: 'Montserrat_400Regular',
-    textAlign: 'center',
     justifyContent: 'center',
     color: 'white',
   },

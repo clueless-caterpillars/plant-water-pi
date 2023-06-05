@@ -4,13 +4,15 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 
 import Home from './src/Components/Home';
 import Plant from './src/Components/PlantInfo';
+import HistoryLog from './src/Components/History';
 
 export default function App() {
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
-        <Home />
+        {/* <Home /> */}
         {/* <Plant /> */}
+        <HistoryLog plantName={'My Plant'} />
       </View>      
     </NativeBaseProvider>
   );
