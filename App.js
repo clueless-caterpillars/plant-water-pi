@@ -5,6 +5,7 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 import Home from './src/Components/Home';
 import Plant from './src/Components/PlantInfo';
 import HistoryLog from './src/Components/History';
+import Log from './src/Components/Log';
 
 export default function App() {
   return (
@@ -12,7 +13,8 @@ export default function App() {
       <View style={styles.container}>
         {/* <Home /> */}
         {/* <Plant /> */}
-        <HistoryLog plantName={'My Plant'} />
+        {/* <HistoryLog plantName={'My Plant'} /> */}
+        <Log plantName={`My Plant`} />
       </View>      
     </NativeBaseProvider>
   );
