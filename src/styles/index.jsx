@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { fadeAnim } from "../Components/Home";
 
 const styles =  StyleSheet.create({
   mainContainer: {
@@ -102,13 +103,6 @@ const styles =  StyleSheet.create({
     borderColor: '#c1ff72',
     justifyContent: 'center',
     margin: 5
-  },
-  bgVideo: {
-    flex: 1,
-    zIndex: -1,
-    position: "absolute",
-    height: '100%',
-    top: '50%'
   }
 })
 
