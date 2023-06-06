@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export default styles =  StyleSheet.create({
+const styles =  StyleSheet.create({
   mainContainer: {
     width: '100%',
     height: '100%'
@@ -103,5 +103,13 @@ export default styles =  StyleSheet.create({
     justifyContent: 'center',
     margin: 5
   },
+  bgVideo: {
+    flex: 1,
+    zIndex: -1,
+    position: "absolute",
+    height: '100%',
+    top: '50%'
+  }
 })
 
+export default styles
