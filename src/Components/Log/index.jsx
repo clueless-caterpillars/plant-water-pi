@@ -64,7 +64,7 @@ function Log({plantName}){
 
       <View style={{marginTop: 100, alignItems: 'center', justifyContent: 'center', marginBottom: 0}}>
         <Text style={styles.name}>2023-05-01</Text>
-        <Text style={styles.label}>{`${plantName}`}</Text>        
+        <Text style={styles.label}>{`My Plant`}</Text>        
       </View>
       
       <ScrollView>

@@ -9,7 +9,7 @@ import styles from "../../styles";
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
 
-function Plant(){
+function Plant({navigation}){
 
   const [soil, setSoil] = useState(50);
   const [temp, setTemp] = useState(78);
@@ -27,6 +27,10 @@ function Plant(){
 
   if(!fontsLoaded){
     return null;
+  }
+
+  const navigateToHistory = () => {
+    navigation.navigate('History');
   }
 
   return(
@@ -105,7 +109,7 @@ function Plant(){
           <Text style={styles.buttonText}>Edit Plant</Text>
         </Pressable>
         <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>History Logs</Text>
+          <Text style={styles.buttonText} onPress={navigateToHistory}>History Logs</Text>
         </Pressable>
       </View>
 
