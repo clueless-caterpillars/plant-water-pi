@@ -9,7 +9,7 @@ import styles from "../../styles";
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
 
-function Home (props) {
+function Home ({navigation}) {
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -18,6 +18,10 @@ function Home (props) {
 
   if(!fontsLoaded){
     return null;
+  }
+
+  const navigateToPlant = () => {
+    navigation.navigate('Plant');
   }
 
   return (
@@ -49,7 +53,7 @@ function Home (props) {
       </View>
 
       <View style={styles.componentContainer}>
-        <Pressable style={styles.login}>
+        <Pressable style={styles.login} onPress={navigateToPlant}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
         <Pressable style={styles.signUp}>

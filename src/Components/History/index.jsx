@@ -8,7 +8,7 @@ import styles from "../../styles";
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
 
-function HistoryLog({plantName}) {
+function HistoryLog({plantName, navigation}) {
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -16,6 +16,10 @@ function HistoryLog({plantName}) {
 
   if(!fontsLoaded){
     return null;
+  }
+
+  const navigateToLog = () => {
+    navigation.navigate('Log');
   }
 
   return(
@@ -28,12 +32,12 @@ function HistoryLog({plantName}) {
 
       <View style={{marginTop: 100, alignItems: 'center', justifyContent: 'center', marginBottom: 0}}>
         <Text style={styles.name}>History Logs</Text>
-        <Text style={styles.label}>{`${plantName}`}</Text>        
+        <Text style={styles.label}>{`My Plant`}</Text>        
       </View>
       
       <ScrollView style={{ marginTop: 25, marginBottom: 25, width: '100%'}} contentContainerStyle={{justifyContent: 'center',
     alignItems: 'center'}}>
-        <Pressable style={styles.buttons}>
+        <Pressable style={styles.buttons} onPress={navigateToLog}>
           <Text style={styles.buttonText}>2023-05-20</Text>
         </Pressable>
         <Pressable style={styles.buttons}>
