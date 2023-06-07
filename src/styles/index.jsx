@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { fadeAnim } from "../Components/Home";
+// import { fadeAnim } from "../Components/Home";
 
 const styles =  StyleSheet.create({
   mainContainer: {
@@ -15,6 +15,16 @@ const styles =  StyleSheet.create({
     width: 250,
     height: 50,
     backgroundColor: '#7ed957',
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: 'white',
+    justifyContent: 'center',
+    margin: 5
+  },
+  cancelLogin: {
+    width: 250,
+    height: 50,
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
     borderRadius: 100,
     borderWidth: 2,
     borderColor: 'white',

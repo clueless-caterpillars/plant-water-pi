@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 
@@ -21,7 +20,7 @@ export default function App() {
     Damion_400Regular
   })
 
-  if(!fontsLoaded){
+  if (!fontsLoaded) {
     return null;
   }
 
@@ -39,19 +38,20 @@ export default function App() {
   return (
     <NavigationContainer>
       <NativeBaseProvider>
-          <Stack.Navigator 
-            initialRouteName='Home'
-            screenOptions={navigatorStyleOptions}
-          >
-            <Stack.Screen name='Home' component={Home} />
-            <Stack.Screen name='Plant' component={Plant} />
-            <Stack.Screen name='History' component={HistoryLog} />
-            <Stack.Screen name='Log' component={Log} />
-            {/* <Plant /> */}
-            {/* <HistoryLog plantName={'My Plant'} /> */}
-            {/* <Log plantName={`My Plant`} /> */}            
-          </Stack.Navigator>
-      </NativeBaseProvider>      
+        <Stack.Navigator
+          initialRouteName='Home'
+          screenOptions={navigatorStyleOptions}
+        >
+          {/* <Stack.Screen name='Auth' component={Auth} /> */}
+          <Stack.Screen name='Home' component={Home} />
+          <Stack.Screen name='Plant' component={Plant} />
+          <Stack.Screen name='History' component={HistoryLog} />
+          <Stack.Screen name='Log' component={Log} />
+          {/* <Plant /> */}
+          {/* <HistoryLog plantName={'My Plant'} /> */}
+          {/* <Log plantName={`My Plant`} /> */}
+        </Stack.Navigator>
+      </NativeBaseProvider>
     </NavigationContainer>
 
   );

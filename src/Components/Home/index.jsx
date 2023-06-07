@@ -1,8 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Text, View, Pressable, Animated, StyleSheet } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Video, ResizeMode } from 'expo-av'
+
+// required for authentication state
+import * as LocalAuthentication from 'expo-local-authentication';
+
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 import styles from "../../styles";
@@ -18,6 +22,40 @@ const videos = [
 ]
 
 function Home ({navigation}) {
+
+    // state variables for local authentication
+    const [isBiometricsSupported, setIsBioMetricsSupported] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    // check if device hardware supports biometrics
+    useEffect(() => {
+        (async () => {
+            const compatible = await LocalAuthentication.hasHardwareAsync();
+            setIsBioMetricsSupported(compatible);
+        })();
+    });
+
+    // actual authentication function here
+    function onAuthenticate() {
+        const auth = LocalAuthentication.authenticateAsync({
+            promptMessage: 'Authenticate',
+            fallbackLabel: 'Enter Passcode',
+        });
+        auth.then(result => {
+            if(!result.success) {
+              console.log('NOT AUTHORIZED');
+              setIsAuthenticated(false);
+              return;
+            }
+            else {
+              setIsAuthenticated(result.success);
+              navigateToPlant();
+            }
+            console.log(result);
+        }
+        );
+    }
+
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const [videoIdx, setVideoIdx] = useState(0);
@@ -125,7 +163,7 @@ const fadeVideo = async () => {
       </View>
 
       <View style={styles.componentContainer}>
-        <Pressable style={styles.login} onPress={navigateToPlant}>
+        <Pressable style={styles.login} onPress={onAuthenticate}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
         <Pressable style={styles.signUp}>
@@ -135,7 +173,5 @@ const fadeVideo = async () => {
     </View>
   )
 }
-
-
 
 export default Home;
