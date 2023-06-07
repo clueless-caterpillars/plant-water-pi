@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { fadeAnim } from "../Components/Home";
+// import { fadeAnim } from "../Components/Home";
 
 const styles =  StyleSheet.create({
   mainContainer: {

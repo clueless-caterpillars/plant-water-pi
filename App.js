@@ -3,15 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-// required for authentication state
-import { useState, useEffect } from 'react';
-import * as LocalAuthentication from 'expo-local-authentication';
-
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 
-import Auth from './src/Components/Auth';
 import Home from './src/Components/Home';
 import Plant from './src/Components/PlantInfo';
 import HistoryLog from './src/Components/History';
@@ -20,32 +14,6 @@ import Log from './src/Components/Log';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
-  // state variables for local authentication
-  const [isBiometricsSupported, setIsBioMetricsSupported] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // check if device hardware supports biometrics
-  useEffect(() => {
-    (async () => {
-      const compatible = await LocalAuthentication.hasHardwareAsync();
-      setIsBioMetricsSupported(compatible);
-    })();
-  });
-
-  // actual authentication function here
-  function onAuthenticate () {
-    const auth = LocalAuthentication.authenticateAsync({
-      promptMessage: 'Authenticate',
-      fallbackLabel: 'Enter Passcode',
-    });
-    auth.then(result => {
-      setIsAuthenticated(result.success);
-        console.log(result);
-    }
-    );
-  }
-  
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -74,7 +42,7 @@ export default function App() {
           initialRouteName='Home'
           screenOptions={navigatorStyleOptions}
         >
-          <Stack.Screen name='Auth' component={Auth} />
+          {/* <Stack.Screen name='Auth' component={Auth} /> */}
           <Stack.Screen name='Home' component={Home} />
           <Stack.Screen name='Plant' component={Plant} />
           <Stack.Screen name='History' component={HistoryLog} />
