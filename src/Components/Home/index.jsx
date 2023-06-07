@@ -6,6 +6,7 @@ import { Video, ResizeMode } from 'expo-av'
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 import styles from "../../styles";
+import axios from "axios";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
@@ -17,7 +18,21 @@ const videos = [
   bgVideo2
 ]
 
+
+
 function Home ({navigation}) {
+
+  const getData = async () => {
+    let DATA_URL = 'http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status';
+    console.log('from the URL', DATA_URL);
+    try {
+      const response = await axios.get(DATA_URL);
+      console.log('data from the request', response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  getData();
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const [videoIdx, setVideoIdx] = useState(0);
