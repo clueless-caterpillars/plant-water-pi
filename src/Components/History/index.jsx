@@ -5,10 +5,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import styles from "../../styles";
 
+import { useSelector, useDispatch } from "react-redux";
+import plantsSlice from "../../redux/plantsSlice";
+
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
 
 function HistoryLog({plantName, navigation}) {
+
+  const plantState = useSelector(state => state.plants);
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -37,7 +42,14 @@ function HistoryLog({plantName, navigation}) {
       
       <ScrollView style={{ marginTop: 25, marginBottom: 25, width: '100%'}} contentContainerStyle={{justifyContent: 'center',
     alignItems: 'center'}}>
-        <Pressable style={styles.buttons} onPress={navigateToLog}>
+      {plantState.allPlants.map(plant => {
+        let stringDate = new Date(plant.timeStamp).toString().split(' ');
+        let date = `${stringDate[0]} ${stringDate[1]} ${stringDate[2]} ${stringDate[3]}`;
+        return <Pressable style={styles.buttons} onPress={navigateToLog}>
+          <Text style={styles.buttonText}>{date}</Text>
+        </Pressable>
+      })}
+        {/* <Pressable style={styles.buttons} onPress={navigateToLog}>
           <Text style={styles.buttonText}>2023-05-20</Text>
         </Pressable>
         <Pressable style={styles.buttons}>
@@ -72,7 +84,7 @@ function HistoryLog({plantName, navigation}) {
         </Pressable>
         <Pressable style={styles.buttons}>
           <Text style={styles.buttonText}>2023-05-31</Text>
-        </Pressable>
+        </Pressable> */}
       </ScrollView>
 
     </View>
