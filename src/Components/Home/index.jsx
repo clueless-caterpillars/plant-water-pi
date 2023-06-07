@@ -64,34 +64,8 @@ function Home ({navigation}) {
 
 const fadeVideo = async () => {
   fadeOutVideo();
-  // fadeInVideo();
   setTimeout(fadeInVideo, 1500)
 }
-
-  // trying to figure out the video fade in /fade out animation with this func
-  const handleVideoFade = (videoStatus) => {    console.log(videoStatus.durationMillis, videoStatus.positionMillis);
-    if(videoStatus.durationMillis - videoStatus.positionMillis <= 3000 && !isTransitioning){
-      setIsTransitioning(true)
-      if(videoIdx === videos.length){
-        fadeOutVideo(videoStatus.durationMillis - videoStatus.positionMillis)
-        .then(res => {
-          setVideoIdx(0);
-          fadeInVideo();      
-        })
-
-      } else {
-        console.log('ELSE HIT')
-        setIsTransitioning(true);
-        fadeOutVideo(videoStatus.durationMillis - videoStatus.positionMillis)
-        .then(res => {
-          console.log('THEN HIT')
-          setVideoIdx(videoIdx + 1);
-          fadeInVideo();
-        });     
-      }
-    }
-    console.log('IDX: ', videoIdx, 'Transitioning?: ', isTransitioning)
-  }
 
   const handleVideoStatus = (videoStatus) => {
     if(videoStatus.didJustFinish){
