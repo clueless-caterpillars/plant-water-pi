@@ -59,21 +59,45 @@ function Home ({navigation}) {
       toValue: 1,
       duration: 3000,
       useNativeDriver: true,
-    }).start();
-    setIsTransitioning(false)      
+    }).start();      
 }
 
-const fadeVideo = async (remainingTime) => {
-  fadeOutVideo(remainingTime);
+const fadeVideo = async () => {
+  fadeOutVideo();
+  // fadeInVideo();
   setTimeout(fadeInVideo, 1500)
 }
 
-  const handleVideoStatus = (videoStatus) => {
+  // trying to figure out the video fade in /fade out animation with this func
+  const handleVideoFade = (videoStatus) => {    console.log(videoStatus.durationMillis, videoStatus.positionMillis);
     if(videoStatus.durationMillis - videoStatus.positionMillis <= 3000 && !isTransitioning){
       setIsTransitioning(true)
+      if(videoIdx === videos.length){
+        fadeOutVideo(videoStatus.durationMillis - videoStatus.positionMillis)
+        .then(res => {
+          setVideoIdx(0);
+          fadeInVideo();      
+        })
+
+      } else {
+        console.log('ELSE HIT')
+        setIsTransitioning(true);
+        fadeOutVideo(videoStatus.durationMillis - videoStatus.positionMillis)
+        .then(res => {
+          console.log('THEN HIT')
+          setVideoIdx(videoIdx + 1);
+          fadeInVideo();
+        });     
+      }
+    }
+    console.log('IDX: ', videoIdx, 'Transitioning?: ', isTransitioning)
+  }
+
+  const handleVideoStatus = (videoStatus) => {
+    if(videoStatus.didJustFinish){
       // console.log('video finished')
       // setPlayVideo(false);
-      fadeVideo(videoStatus.durationMillis - videoStatus.positionMillis);
+      fadeVideo();
       if(videoIdx === videos.length - 1){
         setVideoIdx(0);
       } else {
