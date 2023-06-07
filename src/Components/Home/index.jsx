@@ -81,8 +81,12 @@ const fadeVideo = async () => {
     }
   }
 
-  const navigateToPlant = () => {
-    navigation.navigate('Plant');
+  // const navigateToPlant = () => {
+  //   navigation.navigate('Plant');
+  // }
+
+  const navigateToAuth = () => {
+    navigation.navigate('Auth');
   }
 
   return (
@@ -125,7 +129,7 @@ const fadeVideo = async () => {
       </View>
 
       <View style={styles.componentContainer}>
-        <Pressable style={styles.login} onPress={navigateToPlant}>
+        <Pressable style={styles.login} onPress={navigateToAuth}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
         <Pressable style={styles.signUp}>
@@ -135,7 +139,5 @@ const fadeVideo = async () => {
     </View>
   )
 }
-
-
 
 export default Home;

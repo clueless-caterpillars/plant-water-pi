@@ -21,6 +21,16 @@ const styles =  StyleSheet.create({
     justifyContent: 'center',
     margin: 5
   },
+  cancelLogin: {
+    width: 250,
+    height: 50,
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: 'white',
+    justifyContent: 'center',
+    margin: 5
+  },
   signUp: {
     width: 250,
     height: 50,
