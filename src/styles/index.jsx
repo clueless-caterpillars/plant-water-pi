@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
+import { fadeAnim } from "../Components/Home";
 
-export default styles =  StyleSheet.create({
+const styles =  StyleSheet.create({
   mainContainer: {
     width: '100%',
     height: '100%'
@@ -102,6 +103,7 @@ export default styles =  StyleSheet.create({
     borderColor: '#c1ff72',
     justifyContent: 'center',
     margin: 5
-  },
+  }
 })
 
+export default styles
