@@ -13,12 +13,11 @@ import styles from "../../styles";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
-const bgVideo1 = require('../../../assets/video/bgVideo1.mp4')
-const bgVideo2 = require('../../../assets/video/bgVideo2.mp4')
+const bgVideo = require('../../../assets/video/bgvideo.mp4')
+
 
 const videos = [
-  bgVideo1,
-  bgVideo2
+  bgVideo
 ]
 
 function Home ({navigation}) {
@@ -82,34 +81,34 @@ function Home ({navigation}) {
     return null;
   }
 
-  const fadeOutVideo = async (remainingTime) => {
-    console.log('fading out!')
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: remainingTime,
-      useNativeDriver: true
-    }).start();      
-  }
+  // const fadeOutVideo = async (remainingTime) => {
+  //   console.log('fading out!')
+  //   Animated.timing(fadeAnim, {
+  //     toValue: 0,
+  //     duration: remainingTime,
+  //     useNativeDriver: true
+  //   }).start();      
+  // }
 
-  const fadeInVideo = async () => {
-    console.log('fading in!')
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();      
-}
+//   const fadeInVideo = async () => {
+//     console.log('fading in!')
+//     Animated.timing(fadeAnim, {
+//       toValue: 1,
+//       duration: 3000,
+//       useNativeDriver: true,
+//     }).start();      
+// }
 
-const fadeVideo = async () => {
-  fadeOutVideo();
-  setTimeout(fadeInVideo, 1500)
-}
+// const fadeVideo = async () => {
+//   fadeOutVideo();
+//   setTimeout(fadeInVideo, 1500)
+// }
 
   const handleVideoStatus = (videoStatus) => {
     if(videoStatus.didJustFinish){
       // console.log('video finished')
       // setPlayVideo(false);
-      fadeVideo();
+      // fadeVideo();
       if(videoIdx === videos.length - 1){
         setVideoIdx(0);
       } else {
