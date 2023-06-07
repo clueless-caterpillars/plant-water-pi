@@ -10,6 +10,7 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 import styles from "../../styles";
+import axios from "axios";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
@@ -20,6 +21,8 @@ const videos = [
   bgVideo1,
   bgVideo2
 ]
+
+
 
 function Home ({navigation}) {
 
