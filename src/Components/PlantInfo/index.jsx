@@ -1,20 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, Pressable } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Progress, Box } from 'native-base';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import styles from "../../styles";
+import axios from "axios";
+
+import { useSelector, useDispatch } from "react-redux";
+import plantsSlice from "../../redux/plantsSlice";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
 
 function Plant({navigation}){
 
+  const plantsState = useSelector(state => state.plants);
+  const dispatch = useDispatch();
+  const {updateAllPlants, setActivePlant} = plantsSlice.actions;
+
   const [soil, setSoil] = useState(50);
-  const [temp, setTemp] = useState(78);
   const [water, setWater] = useState(35);
-  const [plantName, setPlantName] = useState('My Plant');
+
+  const fetchData = () => async() => {
+    let plantInfo = axios
+      .get('http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status')
+      .then(response => response.data)
+
+      return plantInfo;
+  }
+
+  const handlePlantData = () => {
+    dispatch(fetchData())
+    .then(response => {
+      dispatch(updateAllPlants(response));
+      dispatch(setActivePlant(response[0]))
+      // console.log(response[0])
+    })
+  }
+
+  // fetches all plant data and sets it to state on 'componentDidMount'
+  useEffect(() => {
+    handlePlantData();
+  }, [])
+
 
   const handleWaterNow = (moisture, waterUsed) => {
     setSoil(soil + moisture);
@@ -33,6 +62,9 @@ function Plant({navigation}){
     navigation.navigate('History');
   }
 
+  let formattedTime = new Date(plantsState.activePlant.timeStamp).toString().split(' ')[4];
+
+
   return(
     <View style={styles.mainContainer}>
       <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
@@ -41,7 +73,8 @@ function Plant({navigation}){
         style={styles.gradient}
       />
       <View style={styles.componentContainer}>
-        <Text style={styles.name}>{`${plantName}`}</Text>        
+        <Text style={styles.name}>{`${plantsState.activePlant.plantId}`}</Text> 
+        <Text style={styles.label}>{`Last Updated: ${formattedTime}`}</Text>       
       </View>
 
 
@@ -49,7 +82,7 @@ function Plant({navigation}){
           <Text style={styles.label}>Soil Moisture</Text>
           <Box w='90%' maxW='400'>
             <Progress 
-              value={soil} 
+              value={plantsState.activePlant.soilMoisture} 
               mx='8' 
               size='2xl'
               bg="blue.800"
@@ -60,14 +93,14 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'white'}}>Soil %</Text>  
+              <Text style={{color: 'white'}}>{plantsState.activePlant.soilMoisture}</Text>  
             </Progress>        
           </Box>
 
           <Text style={styles.label}>Temperature</Text>
           <Box w='90%' maxW='400'>
             <Progress 
-              value={temp} 
+              value={plantsState.activePlant.temperature} 
               mx='8' 
               size='2xl'
               bg="error.500"
@@ -78,25 +111,25 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'black'}}>Temp °</Text> 
+              <Text style={{color: 'black'}}>{plantsState.activePlant.temperature}</Text> 
             </Progress>        
           </Box>
 
-          <Text style={styles.label}>Reservoir</Text>
+          <Text style={styles.label}>Humidity</Text>
           <Box w='90%' maxW='400'>
             <Progress 
-              value={water} 
+              value={plantsState.activePlant.humidity} 
               mx='8' 
               size='2xl'
-              bg="blue.800"
+              bg="green.800"
               _filledTrack={{
-                bg: 'cyan.400'
+                bg: 'lime.400'
               }}
               borderColor='white'
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'white'}}>Reservoir %</Text> 
+              <Text style={{color: 'white'}}>{plantsState.activePlant.humidity}</Text> 
             </Progress>        
           </Box>
       </View>

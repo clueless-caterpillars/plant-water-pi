@@ -4,6 +4,10 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import mainReducer from './src/redux';
+
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 
@@ -13,6 +17,10 @@ import HistoryLog from './src/Components/History';
 import Log from './src/Components/Log';
 
 const Stack = createNativeStackNavigator();
+
+let mainStore = configureStore({
+  reducer: mainReducer
+})
 
 export default function App() {
 
@@ -37,22 +45,24 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <NativeBaseProvider>
-          <Stack.Navigator 
-            initialRouteName='Home'
-            screenOptions={navigatorStyleOptions}
-          >
-            <Stack.Screen name='Home' component={Home} />
-            <Stack.Screen name='Plant' component={Plant} />
-            <Stack.Screen name='History' component={HistoryLog} />
-            <Stack.Screen name='Log' component={Log} />
-            {/* <Plant /> */}
-            {/* <HistoryLog plantName={'My Plant'} /> */}
-            {/* <Log plantName={`My Plant`} /> */}            
-          </Stack.Navigator>
-      </NativeBaseProvider>      
-    </NavigationContainer>
+    <Provider store={mainStore} > 
+      <NavigationContainer>
+        <NativeBaseProvider>
+            <Stack.Navigator 
+              initialRouteName='Home'
+              screenOptions={navigatorStyleOptions}
+            >
+              <Stack.Screen name='Home' component={Home} />
+              <Stack.Screen name='Plant' component={Plant} />
+              <Stack.Screen name='History' component={HistoryLog} />
+              <Stack.Screen name='Log' component={Log} />
+              {/* <Plant /> */}
+              {/* <HistoryLog plantName={'My Plant'} /> */}
+              {/* <Log plantName={`My Plant`} /> */}            
+            </Stack.Navigator>
+        </NativeBaseProvider>      
+      </NavigationContainer>
+    </Provider>
 
   );
 }

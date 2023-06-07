@@ -44,7 +44,7 @@ function Home ({navigation}) {
     return null;
   }
 
-  const fadeOutVideo = async (remainingTime) => {
+  const fadeOutVideo = async (remainingTime=3000) => {
     console.log('fading out!')
     Animated.timing(fadeAnim, {
       toValue: 0,
@@ -87,8 +87,8 @@ const fadeVideo = async () => {
 
   return (
     <View style={[styles.mainContainer]}>
-      {/* <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} /> */}
-      <Animated.View style={[videoStyle.bgVideo, {opacity: fadeAnim}]}>
+      <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
+      {/* <Animated.View style={[videoStyle.bgVideo, {opacity: fadeAnim}]}>
         <Video 
           ref={null}
           style={videoStyle.bgVideo}
@@ -98,7 +98,7 @@ const fadeVideo = async () => {
           shouldPlay={playVideo}
           onPlaybackStatusUpdate={handleVideoStatus}
         />           
-      </Animated.View>
+      </Animated.View> */}
 
       <LinearGradient 
         colors={['rgba(126, 216, 87, 0.6)', 'rgba(0, 151, 178, 0.6)']}
