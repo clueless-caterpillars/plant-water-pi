@@ -25,7 +25,16 @@ const plantsSlice = createSlice({
       state.history = sortedHistory;
     },
     updateLogTableData(state, action){
-      state.logTableData = action.payload;
+      let sortedLogData = action.payload.sort((a, b) => {
+        if (a.timeStamp < b.timeStamp){
+          return -1
+        }
+        else if (a.timeStamp > b.timeStamp){
+          return 1
+        }
+        else return 0
+      })
+      state.logTableData = sortedLogData;
     }
   }
 })
