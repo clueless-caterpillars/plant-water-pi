@@ -2,23 +2,53 @@ import React, { useState } from "react";
 import { Text, View, Pressable } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Progress, Box } from 'native-base';
+import { Progress, Box, Spinner, HStack } from 'native-base';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import styles from "../../styles";
+import axios from 'axios';
+import Constants from 'expo-constants'
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
+
+const API_URL = Constants.manifest.extra.API_URL
 
 function Plant({navigation}){
 
   const [soil, setSoil] = useState(50);
   const [temp, setTemp] = useState(78);
   const [water, setWater] = useState(35);
+  const [isWatering, setIsWatering] = useState(false);
   const [plantName, setPlantName] = useState('My Plant');
 
-  const handleWaterNow = (moisture, waterUsed) => {
-    setSoil(soil + moisture);
-    setWater(water - waterUsed);
+  const handleWaterNow = async() => {
+    /*setSoil(soil + moisture);
+    setWater(water - waterUsed);*/
+    
+    //Send request to Raspberry Pi to turn on.
+    const state_url = `${API_URL}/state`;
+    const currentStatus_url = `${API_URL}/status`;
+    try {
+      let response = await axios.post(state_url, null, {
+        params: {
+          state: 'on'
+        },
+      })
+      console.log('hey', response.data);
+      setIsWatering(true);
+      setTimeout(() => {
+        setIsWatering(false);
+      }, 5000);
+    } catch (e) {
+      console.log('An error occurred.');
+      console.log(e);
+    }
+    //change state to watering.
+
+
+    //Need to update with current measurements.
+    //Use a GET method after watering is done.
+
   }
 
   const [fontsLoaded] = useFonts({
@@ -102,9 +132,19 @@ function Plant({navigation}){
       </View>
 
       <View style={styles.componentContainer}>
-        <Pressable style={styles.waterNow} onPress={() => handleWaterNow(20, 10)}>
+        {isWatering
+        ?
+        <Pressable style={styles.waterNow}>
+          <HStack space={2} justifyContent="center" alignItems="center">
+            <Spinner size="lg" color="white"/>
+            <Text style={styles.loadingText}>Watering Plant...</Text>
+          </HStack>
+        </Pressable>
+        :
+        <Pressable style={styles.waterNow} onPress={handleWaterNow}>
           <Text style={styles.buttonText}>Water Now</Text>
         </Pressable>
+        }
         <Pressable style={styles.buttons}>
           <Text style={styles.buttonText}>Edit Plant</Text>
         </Pressable>
