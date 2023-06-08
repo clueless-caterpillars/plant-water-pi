@@ -33,7 +33,7 @@ function Plant({navigation}){
     dispatch(fetchData())
     .then(response => {
       dispatch(updateAllPlants(response));
-      dispatch(setActivePlant(response[2]))
+      // dispatch(setActivePlant(response[0]))
     })
   }
 
@@ -81,7 +81,7 @@ function Plant({navigation}){
         colors={['rgba(126, 216, 87, 0.6)', 'rgba(0, 151, 178, 0.6)']}
         style={styles.gradient}
       />
-      <View style={[styles.componentContainer, {display: 'flex', flexDirection:'row'}]}>
+      <View style={[styles.componentContainer, {display: 'flex', flexDirection:'row', justifyContent: 'space-between'}]}>
         
         <Pressable style={styles.smButtons} onPress={() => handleChangePlant(-1)}>
           <Text style={styles.buttonText}>{`<`}</Text>
@@ -114,7 +114,7 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'white'}}>{plantsState.allPlants[plantIdx].soilMoisture.toFixed(2)}</Text>  
+              <Text style={{color: 'white'}}>{plantsState.allPlants[plantIdx].soilMoisture?.toFixed(1)}</Text>  
             </Progress>        
           </Box>
 
@@ -132,7 +132,7 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'black'}}>{plantsState.allPlants[plantIdx].temperature.toFixed(2)}</Text> 
+              <Text style={{color: 'black'}}>{plantsState.allPlants[plantIdx].temperature?.toFixed(1)}</Text> 
             </Progress>        
           </Box>
 
@@ -150,7 +150,7 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'white'}}>{plantsState.allPlants[plantIdx].humidity.toFixed(2)}</Text> 
+              <Text style={{color: 'white'}}>{plantsState.allPlants[plantIdx].humidity?.toFixed(1)}</Text> 
             </Progress>        
           </Box>
       </View>
