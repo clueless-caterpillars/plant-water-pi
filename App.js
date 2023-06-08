@@ -4,7 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
-
+import axios from 'axios';
+import Constants from 'expo-constants'
 import Home from './src/Components/Home';
 import Plant from './src/Components/PlantInfo';
 import HistoryLog from './src/Components/History';
@@ -15,10 +16,22 @@ import awsExports from './src/aws-exports';
 Amplify.configure(awsExports);
 import { withAuthenticator } from '@aws-amplify/ui-react-native';
 
-
 const Stack = createNativeStackNavigator();
 
+const API_URL = Constants.manifest.extra.API_URL
+
 function App() {
+  
+  const getData = async () => {
+    console.log('from the URL', API_URL);
+    try {
+      const response = await axios.get(API_URL);
+      console.log('data from the request', response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  getData();
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,

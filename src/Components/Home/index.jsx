@@ -27,51 +27,54 @@ const SignOutButton = () => {
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 import styles from "../../styles";
+import axios from "axios";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
-const bgVideo1 = require('../../../assets/video/bgVideo1.mp4')
-const bgVideo2 = require('../../../assets/video/bgVideo2.mp4')
+const bgVideo = require('../../../assets/video/bgvideo.mp4')
+
 
 const videos = [
-  bgVideo1,
-  bgVideo2
+  bgVideo
 ]
 
-function Home({ navigation }) {
 
-  // state variables for local authentication
-  const [isBiometricsSupported, setIsBioMetricsSupported] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // check if device hardware supports biometrics
-  useEffect(() => {
-    (async () => {
-      const compatible = await LocalAuthentication.hasHardwareAsync();
-      setIsBioMetricsSupported(compatible);
-    })();
-  });
+function Home ({navigation}) {
 
-  // actual authentication function here
-  function onAuthenticate() {
-    const auth = LocalAuthentication.authenticateAsync({
-      promptMessage: 'Authenticate',
-      fallbackLabel: 'Enter Passcode',
+    // state variables for local authentication
+    const [isBiometricsSupported, setIsBioMetricsSupported] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    // check if device hardware supports biometrics
+    useEffect(() => {
+        (async () => {
+            const compatible = await LocalAuthentication.hasHardwareAsync();
+            setIsBioMetricsSupported(compatible);
+        })();
     });
-    auth.then(result => {
-      if (!result.success) {
-        console.log('BIOMETRIC LOGIN NOT AUTHORIZED');
-        setIsAuthenticated(false);
-        return;
-      }
-      else {
-        setIsAuthenticated(result.success);
-        navigateToPlant();
-      }
-      console.log(result);
+
+    // actual authentication function here
+    function onAuthenticate() {
+        const auth = LocalAuthentication.authenticateAsync({
+            promptMessage: 'Authenticate',
+            fallbackLabel: 'Enter Passcode',
+        });
+        auth.then(result => {
+            if(!result.success) {
+              console.log('NOT AUTHORIZED');
+              setIsAuthenticated(false);
+              return;
+            }
+            else {
+              setIsAuthenticated(result.success);
+              navigateToPlant();
+            }
+            console.log(result);
+        }
+        );
     }
-    );
-  }
+
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const [videoIdx, setVideoIdx] = useState(0);
@@ -94,42 +97,42 @@ function Home({ navigation }) {
     Damion_400Regular
   })
 
-  if (!fontsLoaded) {
+  if(!fontsLoaded){
     return null;
   }
 
-  const fadeOutVideo = async (remainingTime) => {
-    console.log('fading out!')
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: remainingTime,
-      useNativeDriver: true
-    }).start();
-  }
+  // const fadeOutVideo = async (remainingTime) => {
+  //   console.log('fading out!')
+  //   Animated.timing(fadeAnim, {
+  //     toValue: 0,
+  //     duration: remainingTime,
+  //     useNativeDriver: true
+  //   }).start();      
+  // }
 
-  const fadeInVideo = async () => {
-    console.log('fading in!')
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-  }
+//   const fadeInVideo = async () => {
+//     console.log('fading in!')
+//     Animated.timing(fadeAnim, {
+//       toValue: 1,
+//       duration: 3000,
+//       useNativeDriver: true,
+//     }).start();      
+// }
 
-  const fadeVideo = async () => {
-    fadeOutVideo();
-    setTimeout(fadeInVideo, 1500)
-  }
+// const fadeVideo = async () => {
+//   fadeOutVideo();
+//   setTimeout(fadeInVideo, 1500)
+// }
 
   const handleVideoStatus = (videoStatus) => {
-    if (videoStatus.didJustFinish) {
+    if(videoStatus.didJustFinish){
       // console.log('video finished')
       // setPlayVideo(false);
-      fadeVideo();
-      if (videoIdx === videos.length - 1) {
+      // fadeVideo();
+      if(videoIdx === videos.length - 1){
         setVideoIdx(0);
       } else {
-        setVideoIdx(videoIdx + 1);
+        setVideoIdx(videoIdx + 1);   
       }
       // setPlayVideo(true)
     }
@@ -142,8 +145,8 @@ function Home({ navigation }) {
   return (
     <View style={[styles.mainContainer]}>
       {/* <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} /> */}
-      <Animated.View style={[videoStyle.bgVideo, { opacity: fadeAnim }]}>
-        <Video
+      <Animated.View style={[videoStyle.bgVideo, {opacity: fadeAnim}]}>
+        <Video 
           ref={null}
           style={videoStyle.bgVideo}
           source={videos[videoIdx]}
@@ -151,10 +154,10 @@ function Home({ navigation }) {
           isLooping
           shouldPlay={playVideo}
           onPlaybackStatusUpdate={handleVideoStatus}
-        />
+        />           
       </Animated.View>
 
-      <LinearGradient
+      <LinearGradient 
         colors={['rgba(126, 216, 87, 0.6)', 'rgba(0, 151, 178, 0.6)']}
         style={styles.gradient}
       />
@@ -164,18 +167,18 @@ function Home({ navigation }) {
       <View style={styles.componentContainer}>
 
         <Text style={
-          {
-            fontFamily: 'Damion_400Regular',
-            fontSize: 108,
-            color: 'white',
-            width: '100%',
+          { 
+          fontFamily: 'Damion_400Regular',
+          fontSize: 108,
+          color: 'white',
+          width: '100%',
           }}>
-          PlantPal
+            PlantPal
         </Text>
 
         <Text style={styles.buttonText}>
           Your Plant's Best Pal
-        </Text>
+        </Text>          
       </View>
 
       <View style={styles.componentContainer}>
