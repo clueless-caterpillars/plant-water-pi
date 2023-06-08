@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-plantwaterpi-dev-112112-authRole",
+      "UnauthRoleArn": "arn:aws:iam::919132472542:role/amplify-plantwaterpi-dev-112112-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::919132472542:role/amplify-plantwaterpi-dev-112112-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-plantwaterpi-dev-112112-deployment",
+      "UnauthRoleName": "amplify-plantwaterpi-dev-112112-unauthRole",
+      "StackName": "amplify-plantwaterpi-dev-112112",
+      "StackId": "arn:aws:cloudformation:us-west-2:919132472542:stack/amplify-plantwaterpi-dev-112112/4131e9c0-0629-11ee-bd1c-06428afb69ef",
+      "AmplifyAppId": "ddcoq36tg1io5"
+    },
+    "categories": {
+      "auth": {
+        "plantwaterpid4d11e97": {}
+      }
+    }
+  }
+}
