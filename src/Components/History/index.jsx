@@ -49,42 +49,6 @@ function HistoryLog({plantName, navigation}) {
           <Text style={styles.buttonText}>{date}</Text>
         </Pressable>
       })}
-        {/* <Pressable style={styles.buttons} onPress={navigateToLog}>
-          <Text style={styles.buttonText}>2023-05-20</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-21</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-22</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-23</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-24</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-25</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-26</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-27</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-28</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-29</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-30</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-31</Text>
-        </Pressable> */}
       </ScrollView>
 
     </View>

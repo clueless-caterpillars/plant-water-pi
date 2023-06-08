@@ -12,8 +12,10 @@ const plantsSlice = createSlice({
       state.allPlants = action.payload;
     },
     setActivePlant(state, action){
-      action.payload.humidity = action.payload.humidity.toFixed(2);
-      action.payload.temperature = action.payload.temperature.toFixed(2);
+      if (action.payload.humidity && action.payload.temperature){
+        action.payload.humidity = action.payload.humidity?.toFixed(2);
+        action.payload.temperature = action.payload.temperature?.toFixed(2);        
+      }
       state.activePlant = action.payload;
     }
   }

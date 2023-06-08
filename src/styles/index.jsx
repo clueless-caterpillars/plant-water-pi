@@ -94,6 +94,16 @@ const styles =  StyleSheet.create({
     justifyContent: 'center',
     margin: 5
   },
+  smButtons: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: '#c1ff72',
+    justifyContent: 'center',
+    margin: 5
+  },
   waterNow: {
     width: 250,
     height: 50,
