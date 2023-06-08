@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,17 +12,12 @@ import Plant from './src/Components/PlantInfo';
 import HistoryLog from './src/Components/History';
 import Log from './src/Components/Log';
 
-import { Amplify } from 'aws-amplify';
-import awsExports from './src/aws-exports';
-Amplify.configure(awsExports);
-import { withAuthenticator } from '@aws-amplify/ui-react-native';
-
-
 const Stack = createNativeStackNavigator();
 
 const API_URL = Constants.manifest.extra.API_URL
 
-function App() {
+export default function App() {
+  
   
   const getData = async () => {
     console.log('from the URL', API_URL);
@@ -84,6 +80,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-// export default App;
-export default withAuthenticator(App);
