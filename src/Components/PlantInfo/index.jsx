@@ -11,9 +11,18 @@ import Constants from 'expo-constants'
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
 
+// user token dependencies
+import { btoa, atob } from 'react-native-quick-base64';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
+
 const API_URL = Constants.manifest.extra.API_URL
 
-function Plant({navigation}){
+function Plant({ navigation }) {
+
+  // retrieves only the current value of 'user' from 'useAuthenticator'
+  const userSelector = (context) => [context.user]
+  const { user } = useAuthenticator(userSelector);
+
 
   const [soil, setSoil] = useState(50);
   const [temp, setTemp] = useState(78);
@@ -21,20 +30,25 @@ function Plant({navigation}){
   const [isWatering, setIsWatering] = useState(false);
   const [plantName, setPlantName] = useState('My Plant');
 
-  const handleWaterNow = async() => {
+  const handleWaterNow = async () => {
     /*setSoil(soil + moisture);
     setWater(water - waterUsed);*/
-    
+
     //Send request to Raspberry Pi to turn on.
+    const jwt = JSON.stringify(user.signInUserSession.idToken.jwtToken);
+    console.log(jwt);
+    const base64jwt = btoa(jwt);
+    console.log(base64jwt);
     const state_url = `${API_URL}/state`;
     const currentStatus_url = `${API_URL}/status`;
     try {
       let response = await axios.post(state_url, null, {
+        headers: { "Authorization": `Bearer ${base64jwt}` },
         params: {
           state: 'on'
         },
       })
-      console.log('hey', response.data);
+      console.log('response from watering POST is', response);
       setIsWatering(true);
       setTimeout(() => {
         setIsWatering(false);
@@ -55,7 +69,7 @@ function Plant({navigation}){
     Montserrat_400Regular,
   })
 
-  if(!fontsLoaded){
+  if (!fontsLoaded) {
     return null;
   }
 
@@ -63,87 +77,87 @@ function Plant({navigation}){
     navigation.navigate('History');
   }
 
-  return(
+  return (
     <View style={styles.mainContainer}>
-      <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
-      <LinearGradient 
+      <Image source={bgImage} contentPosition={{ right: 0 }} style={styles.bgImage} />
+      <LinearGradient
         colors={['rgba(126, 216, 87, 0.6)', 'rgba(0, 151, 178, 0.6)']}
         style={styles.gradient}
       />
       <View style={styles.componentContainer}>
-        <Text style={styles.name}>{`${plantName}`}</Text>        
+        <Text style={styles.name}>{`${plantName}`}</Text>
       </View>
 
 
       <View style={styles.componentContainer}>
-          <Text style={styles.label}>Soil Moisture</Text>
-          <Box w='90%' maxW='400'>
-            <Progress 
-              value={soil} 
-              mx='8' 
-              size='2xl'
-              bg="blue.800"
-              _filledTrack={{
-                bg: 'cyan.400'
-              }}
-              borderColor='white'
-              borderWidth={2}
-              style={styles.progress}
-            >
-              <Text style={{color: 'white'}}>Soil %</Text>  
-            </Progress>        
-          </Box>
+        <Text style={styles.label}>Soil Moisture</Text>
+        <Box w='90%' maxW='400'>
+          <Progress
+            value={soil}
+            mx='8'
+            size='2xl'
+            bg="blue.800"
+            _filledTrack={{
+              bg: 'cyan.400'
+            }}
+            borderColor='white'
+            borderWidth={2}
+            style={styles.progress}
+          >
+            <Text style={{ color: 'white' }}>Soil %</Text>
+          </Progress>
+        </Box>
 
-          <Text style={styles.label}>Temperature</Text>
-          <Box w='90%' maxW='400'>
-            <Progress 
-              value={temp} 
-              mx='8' 
-              size='2xl'
-              bg="error.500"
-              _filledTrack={{
-                bg: 'yellow.400'
-              }}
-              borderColor='white'
-              borderWidth={2}
-              style={styles.progress}
-            >
-              <Text style={{color: 'black'}}>Temp °</Text> 
-            </Progress>        
-          </Box>
+        <Text style={styles.label}>Temperature</Text>
+        <Box w='90%' maxW='400'>
+          <Progress
+            value={temp}
+            mx='8'
+            size='2xl'
+            bg="error.500"
+            _filledTrack={{
+              bg: 'yellow.400'
+            }}
+            borderColor='white'
+            borderWidth={2}
+            style={styles.progress}
+          >
+            <Text style={{ color: 'black' }}>Temp °</Text>
+          </Progress>
+        </Box>
 
-          <Text style={styles.label}>Reservoir</Text>
-          <Box w='90%' maxW='400'>
-            <Progress 
-              value={water} 
-              mx='8' 
-              size='2xl'
-              bg="blue.800"
-              _filledTrack={{
-                bg: 'cyan.400'
-              }}
-              borderColor='white'
-              borderWidth={2}
-              style={styles.progress}
-            >
-              <Text style={{color: 'white'}}>Reservoir %</Text> 
-            </Progress>        
-          </Box>
+        <Text style={styles.label}>Reservoir</Text>
+        <Box w='90%' maxW='400'>
+          <Progress
+            value={water}
+            mx='8'
+            size='2xl'
+            bg="blue.800"
+            _filledTrack={{
+              bg: 'cyan.400'
+            }}
+            borderColor='white'
+            borderWidth={2}
+            style={styles.progress}
+          >
+            <Text style={{ color: 'white' }}>Reservoir %</Text>
+          </Progress>
+        </Box>
       </View>
 
       <View style={styles.componentContainer}>
         {isWatering
-        ?
-        <Pressable style={styles.waterNow}>
-          <HStack space={2} justifyContent="center" alignItems="center">
-            <Spinner size="lg" color="white"/>
-            <Text style={styles.loadingText}>Watering Plant...</Text>
-          </HStack>
-        </Pressable>
-        :
-        <Pressable style={styles.waterNow} onPress={handleWaterNow}>
-          <Text style={styles.buttonText}>Water Now</Text>
-        </Pressable>
+          ?
+          <Pressable style={styles.waterNow}>
+            <HStack space={2} justifyContent="center" alignItems="center">
+              <Spinner size="lg" color="white" />
+              <Text style={styles.loadingText}>Watering Plant...</Text>
+            </HStack>
+          </Pressable>
+          :
+          <Pressable style={styles.waterNow} onPress={handleWaterNow}>
+            <Text style={styles.buttonText}>Water Now</Text>
+          </Pressable>
         }
         <Pressable style={styles.buttons}>
           <Text style={styles.buttonText}>Edit Plant</Text>
