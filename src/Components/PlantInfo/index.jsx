@@ -17,23 +17,33 @@ function Plant({navigation}){
 
   const plantsState = useSelector(state => state.plants);
   const dispatch = useDispatch();
-  const {updateAllPlants, setActivePlant} = plantsSlice.actions;
+  const { updateMostRecentPlantData, updatePlantHistory } = plantsSlice.actions;
 
   const [plantIdx, setPlantIdx] = useState(0);
 
-  const fetchData = () => async() => {
+  const fetchPlantData = () => async() => {
     let plantInfo = axios
       .get('http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status')
       .then(response => response.data)
-
       return plantInfo;
   }
 
+  const fetchPlantHistory = () => async() => {
+    let plantHistory = axios
+      .get('http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status/day')
+      .then(response => response.data)
+      return plantHistory;
+  }
+
   const handlePlantData = () => {
-    dispatch(fetchData())
-    .then(response => {
-      dispatch(updateAllPlants(response));
-      // dispatch(setActivePlant(response[0]))
+    dispatch(fetchPlantData())
+    .then(plantData => {
+      dispatch(updateMostRecentPlantData(plantData));
+    })
+
+    dispatch(fetchPlantHistory())
+    .then(plantHistory => {
+      dispatch(updatePlantHistory(plantHistory))
     })
   }
 
@@ -55,23 +65,20 @@ function Plant({navigation}){
     navigation.navigate('History');
   }
 
-  const handleChangePlant = (change) => {
-    let newIdx = plantIdx + change;
-    if (newIdx >= plantsState.allPlants.length){
-      // dispatch(setActivePlant(plantsState.allPlants[0]))
-      setPlantIdx(0)
-    } 
-    else if (newIdx < 0) {
-      // dispatch(setActivePlant(plantsState.allPlants[plantsState.allPlants.length - 1]))
-      setPlantIdx(plantsState.allPlants.length - 1)
-    }
-    else {
-      // dispatch(setActivePlant(newIdx))
-      setPlantIdx(newIdx)
-    }
-  }
+  // const handleChangePlant = (change) => {
+  //   let newIdx = plantIdx + change;
+  //   if (newIdx >= plantsState.allPlants.length){
+  //     setPlantIdx(0)
+  //   } 
+  //   else if (newIdx < 0) {
+  //     setPlantIdx(plantsState.allPlants.length - 1)
+  //   }
+  //   else {
+  //     setPlantIdx(newIdx)
+  //   }
+  // }
 
-  let formattedTime = new Date(plantsState.allPlants[plantIdx].timeStamp).toString().split(' ')[4];
+  let formattedTime = new Date(plantsState.plant.timeStamp).toString().split(' ')[4];
 
 
   return(
@@ -81,20 +88,20 @@ function Plant({navigation}){
         colors={['rgba(126, 216, 87, 0.6)', 'rgba(0, 151, 178, 0.6)']}
         style={styles.gradient}
       />
-      <View style={[styles.componentContainer, {display: 'flex', flexDirection:'row', justifyContent: 'space-between'}]}>
+      <View style={styles.componentContainer}>
         
-        <Pressable style={styles.smButtons} onPress={() => handleChangePlant(-1)}>
+        {/* <Pressable style={styles.smButtons} onPress={() => handleChangePlant(-1)}>
           <Text style={styles.buttonText}>{`<`}</Text>
-        </Pressable>
+        </Pressable> */}
 
         <View>
-          <Text style={[styles.name, {textAlign: 'center'}]}>{`${plantsState.allPlants[plantIdx].plantId}`}</Text> 
+          <Text style={[styles.name, {textAlign: 'center'}]}>{`My Plant`}</Text> 
           <Text style={styles.label}>{`Last Updated: ${formattedTime}`}</Text>             
         </View>
 
-        <Pressable style={styles.smButtons} onPress={() => handleChangePlant(1)}>
+        {/* <Pressable style={styles.smButtons} onPress={() => handleChangePlant(1)}>
           <Text style={styles.buttonText}>{`>`}</Text>
-        </Pressable>
+        </Pressable> */}
     
       </View>
 
@@ -103,7 +110,7 @@ function Plant({navigation}){
           <Text style={styles.label}>Soil Moisture</Text>
           <Box w='90%' maxW='400'>
             <Progress 
-              value={plantsState.allPlants[plantIdx].soilMoisture} 
+              value={plantsState.plant.soilMoisture} 
               mx='8' 
               size='2xl'
               bg="blue.800"
@@ -114,14 +121,14 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'white'}}>{plantsState.allPlants[plantIdx].soilMoisture?.toFixed(1)}</Text>  
+              <Text style={{color: 'white'}}>{plantsState.plant.soilMoisture?.toFixed(1)}</Text>  
             </Progress>        
           </Box>
 
           <Text style={styles.label}>Temperature</Text>
           <Box w='90%' maxW='400'>
             <Progress 
-              value={plantsState.allPlants[plantIdx].temperature} 
+              value={plantsState.plant.temperature} 
               mx='8' 
               size='2xl'
               bg="error.500"
@@ -132,14 +139,14 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'black'}}>{plantsState.allPlants[plantIdx].temperature?.toFixed(1)}</Text> 
+              <Text style={{color: 'black'}}>{plantsState.plant.temperature?.toFixed(1)}</Text> 
             </Progress>        
           </Box>
 
           <Text style={styles.label}>Humidity</Text>
           <Box w='90%' maxW='400'>
             <Progress 
-              value={plantsState.allPlants[plantIdx].humidity} 
+              value={plantsState.plant.humidity} 
               mx='8' 
               size='2xl'
               bg="green.800"
@@ -150,7 +157,7 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'white'}}>{plantsState.allPlants[plantIdx].humidity?.toFixed(1)}</Text> 
+              <Text style={{color: 'white'}}>{plantsState.plant.humidity?.toFixed(1)}</Text> 
             </Progress>        
           </Box>
       </View>

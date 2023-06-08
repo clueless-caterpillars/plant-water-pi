@@ -23,8 +23,8 @@ function HistoryLog({plantName, navigation}) {
     return null;
   }
 
-  const navigateToLog = () => {
-    navigation.navigate('Log');
+  const navigateToLog = (timestamp) => {
+    navigation.navigate('Log', {timestamp: timestamp});
   }
 
   return(
@@ -42,10 +42,10 @@ function HistoryLog({plantName, navigation}) {
       
       <ScrollView style={{ marginTop: 25, marginBottom: 25, width: '100%'}} contentContainerStyle={{justifyContent: 'center',
     alignItems: 'center'}}>
-      {plantState.allPlants.map(plant => {
-        let stringDate = new Date(plant.timeStamp).toString().split(' ');
+      {plantState.history.map(timestamp => {
+        let stringDate = new Date(timestamp).toString().split(' ');
         let date = `${stringDate[0]} ${stringDate[1]} ${stringDate[2]} ${stringDate[3]}`;
-        return <Pressable style={styles.buttons} onPress={navigateToLog}>
+        return <Pressable style={styles.buttons} onPress={() => navigateToLog(timestamp)}>
           <Text style={styles.buttonText}>{date}</Text>
         </Pressable>
       })}
