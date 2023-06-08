@@ -204,7 +204,7 @@ function Plant({navigation}){
 
     </View>
   )
-}
+}}
 
 
 export default Plant;
