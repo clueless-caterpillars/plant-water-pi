@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import styles from "../../styles";
+import moment from "moment";
 
 import { useSelector, useDispatch } from "react-redux";
 import plantsSlice from "../../redux/plantsSlice";
@@ -42,13 +43,13 @@ function HistoryLog({plantName, navigation}) {
       
       <ScrollView style={{ marginTop: 25, marginBottom: 25, width: '100%'}} contentContainerStyle={{justifyContent: 'center',
     alignItems: 'center'}}>
-      {plantState.history.map(timestamp => {
-        let stringDate = new Date(timestamp).toString().split(' ');
-        let date = `${stringDate[0]} ${stringDate[1]} ${stringDate[2]} ${stringDate[3]}`;
-        return <Pressable style={styles.buttons} onPress={() => navigateToLog(timestamp)}>
-          <Text style={styles.buttonText}>{date}</Text>
+      {plantState.history.map(timestamp => 
+
+        <Pressable style={styles.buttons} onPress={() => navigateToLog(moment(timestamp).valueOf())}>
+          <Text style={styles.buttonText}>{timestamp}</Text>
         </Pressable>
-      })}
+        
+      )}
       </ScrollView>
 
     </View>

@@ -1,7 +1,6 @@
 import React from "react";
-// import Home from "../Components/Home/index";
+import Home from "../Components/Home/index";
 import renderer from 'react-test-renderer'
-const Home = require('../Components/Home/index')
 
 describe('Testing Home screen component...', () => {
 

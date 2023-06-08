@@ -6,6 +6,7 @@ import { useFonts, Montserrat_400Regular, Montserrat_600SemiBold } from "@expo-g
 import { Table, Row} from "react-native-table-component";
 import styles from "../../styles";
 import axios from "axios";
+import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import plantsSlice from "../../redux/plantsSlice";
 
@@ -25,6 +26,21 @@ function Log({route, navigation}){
   const plantsState = useSelector(state => state.plants);
   const dispatch = useDispatch();
   const {updateLogTableData} = plantsSlice.actions;
+
+  const fetchLogData = () => async() => {
+    let logData = axios
+      .get(`http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status/day?date=${timestamp}`)
+      .then(response => response.data);
+
+    return logData;
+  }
+
+  useEffect(() => {
+    dispatch(fetchLogData())
+    .then(logData => {
+      dispatch(updateLogTableData(logData))
+    })
+  }, [])
   
 
   const [fontsLoaded] = useFonts({
@@ -36,19 +52,6 @@ function Log({route, navigation}){
     return null;
   }
 
-  const fetchLogData = () => async() => {
-    let logData = axios
-      .get(`http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status/day?date=${timestamp}`)
-      .then(response => response.data);
-
-    return logData;
-  }
-
-  dispatch(fetchLogData())
-  .then(logData => {
-    dispatch(updateLogTableData(logData))
-  })
-
   let formattedDay = new Date(timestamp).toDateString();
 
   return(
@@ -59,37 +62,35 @@ function Log({route, navigation}){
         style={styles.gradient}
       />
 
-      <View style={{marginTop: 100, alignItems: 'center', justifyContent: 'center', marginBottom: 0}}>
+      <View style={{marginTop: 100, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={[styles.name, {textAlign: 'center', fontSize: 36}]}>{formattedDay}</Text>
         <Text style={styles.label}>{`My Plant`}</Text>        
       </View>
       
-      <ScrollView>
-        <Table borderStyle={{
-          borderColor: 'white',
-          borderWidth: 1,
-          color: 'white',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }} style={{margin: 25,}}>
+      <View style={{height: '62%', margin: 25}}>
+        <Table borderStyle={tableStyle.borders}>
           <Row data={tableHeaders} textStyle={tableStyle.headers} style={{backgroundColor: 'rgba(0, 0, 0, 0.1)'}} />
-          {
-            plantsState.logTableData.map((data, idx) => (
-              <Row 
-                key={idx}
-                data={[
-                  new Date(data.timeStamp).toString().split(' ')[4], 
-                  data.soilMoisture.toFixed(2), 
-                  data.temperature.toFixed(2), 
-                  data.humidity.toFixed(2)
-                ]}
-                style={idx%2 ? tableStyle.oddRow : tableStyle.evenRow}
-                textStyle={tableStyle.text}
-              />
-            ))
-          }
+          <ScrollView>
+            {
+              plantsState.logTableData.map((data, idx) => (
+                <Row 
+                  key={idx}
+                  data={[
+                    moment(data.timeStamp).format('h:mm a'), 
+                    data.soilMoisture?.toFixed(2), 
+                    data.temperature?.toFixed(2), 
+                    data.humidity?.toFixed(2)
+                  ]}
+                  style={idx%2 ? tableStyle.oddRow : tableStyle.evenRow}
+                  borderStyle={tableStyle.borders}
+                  textStyle={tableStyle.text}
+                />
+              ))
+            }            
+          </ScrollView>
+
         </Table>        
-      </ScrollView>
+      </View>
     </View>
   )
 }
@@ -114,6 +115,13 @@ const tableStyle = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center', 
     padding: 5, 
+  },
+  borders: {
+    borderColor: 'white',
+    borderWidth: 1,
+    color: 'white',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 

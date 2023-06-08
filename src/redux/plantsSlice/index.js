@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import moment from "moment";
 
 const plantsSlice = createSlice({
   name: 'plants',
@@ -9,11 +10,11 @@ const plantsSlice = createSlice({
   },
   reducers: {
     updateMostRecentPlantData(state, action){
-      // console.log('REDUCER STATE: ', action.payload)
       state.plant = action.payload;
     },
     updatePlantHistory(state, action){
-      let sortedHistory = action.payload.sort((a, b) => {
+      let sortedHistory = action.payload.map(item => moment(item).format("ddd, MMM D YYYY"))
+      sortedHistory.sort((a, b) => {
         if (a < b){
           return 1
         }
@@ -21,7 +22,8 @@ const plantsSlice = createSlice({
           return -1
         }
         else return 0
-      })
+      });
+      
       state.history = sortedHistory;
     },
     updateLogTableData(state, action){

@@ -6,6 +6,7 @@ import { Progress, Box } from 'native-base';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import styles from "../../styles";
 import axios from "axios";
+import moment from "moment/moment";
 
 import { useSelector, useDispatch } from "react-redux";
 import plantsSlice from "../../redux/plantsSlice";
@@ -25,6 +26,7 @@ function Plant({navigation}){
     let plantInfo = axios
       .get('http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status')
       .then(response => response.data)
+      .catch(e => 'Your plant is dead 😭' )
       return plantInfo;
   }
 
@@ -32,6 +34,7 @@ function Plant({navigation}){
     let plantHistory = axios
       .get('http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status/day')
       .then(response => response.data)
+      .catch(e => e)
       return plantHistory;
   }
 
@@ -78,7 +81,7 @@ function Plant({navigation}){
   //   }
   // }
 
-  let formattedTime = new Date(plantsState.plant.timeStamp).toString().split(' ')[4];
+  let formattedTime = moment(plantsState.plant.timeStamp).format("ddd, MMM D YYYY, h:mm a");
 
 
   return(
@@ -96,7 +99,7 @@ function Plant({navigation}){
 
         <View>
           <Text style={[styles.name, {textAlign: 'center'}]}>{`My Plant`}</Text> 
-          <Text style={styles.label}>{`Last Updated: ${formattedTime}`}</Text>             
+          <Text style={[styles.label, {textAlign: 'center', fontSize: 18}]}>{`Last Updated: ${formattedTime}`}</Text>             
         </View>
 
         {/* <Pressable style={styles.smButtons} onPress={() => handleChangePlant(1)}>
