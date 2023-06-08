@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,12 +11,16 @@ import Plant from './src/Components/PlantInfo';
 import HistoryLog from './src/Components/History';
 import Log from './src/Components/Log';
 
+import { Amplify } from 'aws-amplify';
+import awsExports from './src/aws-exports';
+Amplify.configure(awsExports);
+import { withAuthenticator } from '@aws-amplify/ui-react-native';
+
 const Stack = createNativeStackNavigator();
 
 const API_URL = Constants.manifest.extra.API_URL
 
-export default function App() {
-  
+function App() {
   
   const getData = async () => {
     console.log('from the URL', API_URL);
@@ -57,11 +60,10 @@ export default function App() {
           initialRouteName='Home'
           screenOptions={navigatorStyleOptions}
         >
-          {/* <Stack.Screen name='Auth' component={Auth} /> */}
-          <Stack.Screen name='Home' component={Home}/>
-          <Stack.Screen name='Plant' component={Plant}/>
-          <Stack.Screen name='History' component={HistoryLog}/>
-          <Stack.Screen name='Log' component={Log}/>
+          <Stack.Screen name='Home' component={Home} />
+          <Stack.Screen name='Plant' component={Plant} />
+          <Stack.Screen name='History' component={HistoryLog} />
+          <Stack.Screen name='Log' component={Log} />
           {/* <Plant /> */}
           {/* <HistoryLog plantName={'My Plant'} /> */}
           {/* <Log plantName={`My Plant`} /> */}
@@ -80,3 +82,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+// export default App;
+export default withAuthenticator(App);

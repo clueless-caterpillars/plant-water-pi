@@ -4,8 +4,25 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Video, ResizeMode } from 'expo-av'
 
-// required for authentication state
+// biometrics dependencies
 import * as LocalAuthentication from 'expo-local-authentication';
+
+// signout button dependencies
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
+
+// retrieves only the current value of 'user' from 'useAuthenticator'
+const userSelector = (context) => [context.user]
+
+// signout button logic
+const SignOutButton = () => {
+  const { user, signOut } = useAuthenticator(userSelector);
+  // console.log(user);
+  return (
+    <Pressable onPress={signOut} style={styles.signOut}>
+      <Text style={styles.buttonText}>Sign Out</Text>
+    </Pressable>
+  )
+};
 
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
@@ -168,9 +185,7 @@ function Home ({navigation}) {
         <Pressable style={styles.login} onPress={onAuthenticate}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
-        <Pressable style={styles.signUp}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Pressable>
+        <SignOutButton />
       </View>
     </View>
   )
