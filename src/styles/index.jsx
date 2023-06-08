@@ -47,6 +47,12 @@ const styles =  StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Montserrat_400Regular',
   },
+  loadingText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'Montserrat_400Regular',
+  },
   bgImage: {
     flex: 1,
     zIndex: -1,

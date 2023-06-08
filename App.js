@@ -58,10 +58,10 @@ export default function App() {
           screenOptions={navigatorStyleOptions}
         >
           {/* <Stack.Screen name='Auth' component={Auth} /> */}
-          <Stack.Screen name='Home' component={Home} />
-          <Stack.Screen name='Plant' component={Plant} />
-          <Stack.Screen name='History' component={HistoryLog} />
-          <Stack.Screen name='Log' component={Log} />
+          <Stack.Screen name='Home' component={Home}/>
+          <Stack.Screen name='Plant' component={Plant}/>
+          <Stack.Screen name='History' component={HistoryLog}/>
+          <Stack.Screen name='Log' component={Log}/>
           {/* <Plant /> */}
           {/* <HistoryLog plantName={'My Plant'} /> */}
           {/* <Log plantName={`My Plant`} /> */}
