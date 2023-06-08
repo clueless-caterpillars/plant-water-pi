@@ -9,6 +9,7 @@ import axios from "axios";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import plantsSlice from "../../redux/plantsSlice";
+import Constants  from "expo-constants";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
@@ -20,6 +21,8 @@ const tableHeaders = [
   'Humid'
 ]
 
+const API_URL = Constants.manifest.extra.API_URL
+
 function Log({route, navigation}){
 
   const {timestamp} = route.params;
@@ -27,9 +30,11 @@ function Log({route, navigation}){
   const dispatch = useDispatch();
   const {updateLogTableData} = plantsSlice.actions;
 
+  
+
   const fetchLogData = () => async() => {
     let logData = axios
-      .get(`http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status/day?date=${timestamp}`)
+      .get(`${API_URL}/status/day?date=${timestamp}`)
       .then(response => response.data);
 
     return logData;
@@ -76,10 +81,10 @@ function Log({route, navigation}){
                 <Row 
                   key={idx}
                   data={[
-                    moment(data.timeStamp).format('h:mm a'), 
-                    data.soilMoisture?.toFixed(2), 
-                    data.temperature?.toFixed(2), 
-                    data.humidity?.toFixed(2)
+                    moment(data.timeStamp).format('h:mm A'), 
+                    `${(100 - data.soilMoisture).toFixed(0)} %`, 
+                    `${data.temperature?.toFixed(0)}° C`, 
+                    `${data.humidity?.toFixed(0)} %`
                   ]}
                   style={idx%2 ? tableStyle.oddRow : tableStyle.evenRow}
                   borderStyle={tableStyle.borders}

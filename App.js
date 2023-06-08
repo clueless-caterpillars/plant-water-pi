@@ -16,10 +16,10 @@ import Plant from './src/Components/PlantInfo';
 import HistoryLog from './src/Components/History';
 import Log from './src/Components/Log';
 
-import { Amplify } from 'aws-amplify';
-import awsExports from './src/aws-exports';
-Amplify.configure(awsExports);
-import { withAuthenticator } from '@aws-amplify/ui-react-native';
+// import { Amplify } from 'aws-amplify';
+// import awsExports from './src/aws-exports';
+// Amplify.configure(awsExports);
+// import { withAuthenticator } from '@aws-amplify/ui-react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +40,7 @@ function App() {
       console.error(error);
     }
   };
-  getData();
+  // getData();
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -91,5 +91,5 @@ const styles = StyleSheet.create({
   },
 });
 
-// export default App;
-export default withAuthenticator(App);
+export default App;
+// export default withAuthenticator(App);

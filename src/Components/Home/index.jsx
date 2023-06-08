@@ -7,22 +7,22 @@ import { Video, ResizeMode } from 'expo-av'
 // biometrics dependencies
 import * as LocalAuthentication from 'expo-local-authentication';
 
-// signout button dependencies
-import { useAuthenticator } from '@aws-amplify/ui-react-native';
+// // signout button dependencies
+// import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
-// retrieves only the current value of 'user' from 'useAuthenticator'
-const userSelector = (context) => [context.user]
+// // retrieves only the current value of 'user' from 'useAuthenticator'
+// const userSelector = (context) => [context.user]
 
-// signout button logic
-const SignOutButton = () => {
-  const { user, signOut } = useAuthenticator(userSelector);
-  // console.log(user);
-  return (
-    <Pressable onPress={signOut} style={styles.signOut}>
-      <Text style={styles.buttonText}>Sign Out</Text>
-    </Pressable>
-  )
-};
+// // signout button logic
+// const SignOutButton = () => {
+//   const { user, signOut } = useAuthenticator(userSelector);
+//   // console.log(user);
+//   return (
+//     <Pressable onPress={signOut} style={styles.signOut}>
+//       <Text style={styles.buttonText}>Sign Out</Text>
+//     </Pressable>
+//   )
+// };
 
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
@@ -118,7 +118,7 @@ function Home ({navigation}) {
 
   return (
     <View style={[styles.mainContainer]}>
-//       <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
+      {/* <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} /> */}
       <Animated.View style={[videoStyle.bgVideo, {opacity: fadeAnim}]}>
         <Video 
           ref={null}
@@ -156,10 +156,10 @@ function Home ({navigation}) {
       </View>
 
       <View style={styles.componentContainer}>
-        <Pressable style={styles.login} onPress={onAuthenticate}>
+        <Pressable style={styles.login} onPress={navigateToPlant}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
-        <SignOutButton />
+        {/* <SignOutButton /> */}
       </View>
     </View>
   )

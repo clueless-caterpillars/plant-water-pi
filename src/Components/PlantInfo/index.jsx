@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Pressable } from "react-native";
+import { Text, View, Pressable, StyleSheet } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Progress, Box, Spinner, HStack } from 'native-base';
@@ -11,12 +11,13 @@ import moment from "moment/moment";
 
 import { useSelector, useDispatch } from "react-redux";
 import plantsSlice from "../../redux/plantsSlice";
+import { Video, ResizeMode } from 'expo-av'
 
 import Constants from 'expo-constants'
 
 
 const bgImage = require('../../../assets/homebg.jpg');
-const logo = require('../../../assets/PlantPalLogo.png');
+const bgVideo = require('../../../assets/Videos/bgVideo1.mp4')
 
 const API_URL = Constants.manifest.extra.API_URL
 
@@ -31,7 +32,7 @@ function Plant({navigation}){
 
   const fetchPlantData = () => async() => {
     let plantInfo = axios
-      .get('http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status')
+      .get(`${API_URL}/status`)
       .then(response => response.data)
       .catch(e => 'Your plant is dead 😭' )
       return plantInfo;
@@ -39,7 +40,7 @@ function Plant({navigation}){
 
   const fetchPlantHistory = () => async() => {
     let plantHistory = axios
-      .get('http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status/day')
+      .get(`${API_URL}/status/day`)
       .then(response => response.data)
       .catch(e => e)
       return plantHistory;
@@ -55,6 +56,7 @@ function Plant({navigation}){
     .then(plantHistory => {
       dispatch(updatePlantHistory(plantHistory))
     })
+  }
 
   const handleWaterNow = async() => {
     //Send request to Raspberry Pi to turn on.
@@ -80,7 +82,7 @@ function Plant({navigation}){
 
     //Need to update with current measurements.
     //Use a GET method after watering is done.
-
+    handlePlantData();
 
   }
 
@@ -104,11 +106,22 @@ function Plant({navigation}){
 
   let formattedTime = moment(plantsState.plant.timeStamp).format("ddd, MMM D YYYY, h:mm a");
 
-
   return(
     <View style={styles.mainContainer}>
-    
-      <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
+      
+      {
+        isWatering ? 
+        <Video 
+        ref={null}
+        style={videoStyle.bgVideo}
+        source={bgVideo}
+        resizeMode={ResizeMode.COVER}
+        isLooping
+        shouldPlay={true}
+      />  
+        : 
+        <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
+      }
       <LinearGradient 
         colors={['rgba(126, 216, 87, 0.6)', 'rgba(0, 151, 178, 0.6)']}
         style={styles.gradient}
@@ -124,10 +137,10 @@ function Plant({navigation}){
           <Text style={styles.label}>Soil Moisture</Text>
           <Box w='90%' maxW='400'>
             <Progress 
-              value={plantsState.plant.soilMoisture} 
+              value={(100 - plantsState.plant.soilMoisture)} 
               mx='8' 
               size='2xl'
-              bg="blue.800"
+              bg="blueGray.400"
               _filledTrack={{
                 bg: 'cyan.400'
               }}
@@ -135,17 +148,17 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'white'}}>{plantsState.plant.soilMoisture?.toFixed(1)}</Text>  
+              <Text style={{color: 'white'}}>{(100 - plantsState.plant.soilMoisture).toFixed(0)}</Text>  
             </Progress>        
           </Box>
 
-          <Text style={styles.label}>Temperature</Text>
+          <Text style={styles.label}>Temperature °C</Text>
           <Box w='90%' maxW='400'>
             <Progress 
               value={plantsState.plant.temperature} 
               mx='8' 
               size='2xl'
-              bg="error.500"
+              bg="blueGray.400"
               _filledTrack={{
                 bg: 'yellow.400'
               }}
@@ -153,7 +166,7 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'black'}}>{plantsState.plant.temperature?.toFixed(1)}</Text> 
+              <Text style={{color: 'black'}}>{plantsState.plant.temperature?.toFixed(0)}</Text> 
             </Progress>        
           </Box>
 
@@ -163,7 +176,7 @@ function Plant({navigation}){
               value={plantsState.plant.humidity} 
               mx='8' 
               size='2xl'
-              bg="green.800"
+              bg='blueGray.400'
               _filledTrack={{
                 bg: 'lime.400'
               }}
@@ -171,7 +184,7 @@ function Plant({navigation}){
               borderWidth={2}
               style={styles.progress}
             >
-              <Text style={{color: 'white'}}>{plantsState.plant.humidity?.toFixed(1)}</Text> 
+              <Text style={{color: 'black'}}>{plantsState.plant.humidity?.toFixed(0)}</Text> 
             </Progress>        
           </Box>
       </View>
@@ -204,7 +217,17 @@ function Plant({navigation}){
 
     </View>
   )
-}}
+}
 
+const videoStyle = StyleSheet.create({
+  bgVideo: {
+    flex: 1,
+    zIndex: -1,
+    position: "absolute",
+    width: '100%',
+    height: '100%',
+    opacity: 1
+  }
+})
 
 export default Plant;

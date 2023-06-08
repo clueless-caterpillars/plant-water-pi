@@ -13,8 +13,7 @@ const plantsSlice = createSlice({
       state.plant = action.payload;
     },
     updatePlantHistory(state, action){
-      let sortedHistory = action.payload.map(item => moment(item).format("ddd, MMM D YYYY"))
-      sortedHistory.sort((a, b) => {
+      action.payload.sort((a, b) => {
         if (a < b){
           return 1
         }
@@ -23,7 +22,7 @@ const plantsSlice = createSlice({
         }
         else return 0
       });
-      
+      let sortedHistory = action.payload.map(item => moment(item).format("ddd, MMM D YYYY"))
       state.history = sortedHistory;
     },
     updateLogTableData(state, action){
