@@ -31,7 +31,7 @@ const styles =  StyleSheet.create({
     justifyContent: 'center',
     margin: 5
   },
-  signUp: {
+  signOut: {
     width: 250,
     height: 50,
     backgroundColor: 'rgba(0, 0, 0, 0.0)',

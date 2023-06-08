@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,43 +6,19 @@ import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 
 import Home from './src/Components/Home';
-import Signup from './src/Components/Signup';
 import Plant from './src/Components/PlantInfo';
 import HistoryLog from './src/Components/History';
 import Log from './src/Components/Log';
 
-import { Amplify, Auth } from 'aws-amplify';
-import { withAuthenticator } from '@aws-amplify/ui-react';
-// import '@aws-amplify/ui-react/styles.css';
-
-// generate Amplify settings object for Cognito user pool 
-Amplify.configure({
-  Auth: {
-    identityPoolId: 'us-west-2:5ae0523b-26ad-4ee1-b08a-2de7bd2cd97b',
-    region: 'us-west-2',
-    userPoolId: 'us-west-2_iexBVW8r0',
-    userPoolWebClientId: '4r8dtn8t1irf8b4i5gnf64pt8c',
-    mandatorySignIn: false,
-    signUpVerificationMethod: 'code',
-    oauth: {
-      domain: 'https://plant-pal.auth.us-west-2.amazoncognito.com',
-      scope: [
-        'email',
-        'openid',
-        'phone',
-      ],
-      redirectSignIn: 'exp://localhost:19000/--/',
-      responseType: 'code',
-    },
-  },
-});
-
-const currentConfig = Auth.configure();
+import { Amplify } from 'aws-amplify';
+import awsExports from './src/aws-exports';
+Amplify.configure(awsExports);
+import { withAuthenticator } from '@aws-amplify/ui-react-native';
 
 
 const Stack = createNativeStackNavigator();
 
-function App({ signOut, user }) {
+function App() {
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -73,7 +48,6 @@ function App({ signOut, user }) {
           screenOptions={navigatorStyleOptions}
         >
           <Stack.Screen name='Home' component={Home} />
-          <Stack.Screen name='Signup' component={Signup} />
           <Stack.Screen name='Plant' component={Plant} />
           <Stack.Screen name='History' component={HistoryLog} />
           <Stack.Screen name='Log' component={Log} />
@@ -96,4 +70,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// export default App;
 export default withAuthenticator(App);
