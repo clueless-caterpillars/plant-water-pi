@@ -4,11 +4,17 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import styles from "../../styles";
+import moment from "moment";
+
+import { useSelector, useDispatch } from "react-redux";
+import plantsSlice from "../../redux/plantsSlice";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
 
 function HistoryLog({plantName, navigation}) {
+
+  const plantState = useSelector(state => state.plants);
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -18,8 +24,8 @@ function HistoryLog({plantName, navigation}) {
     return null;
   }
 
-  const navigateToLog = () => {
-    navigation.navigate('Log');
+  const navigateToLog = (timestamp) => {
+    navigation.navigate('Log', {timestamp: timestamp});
   }
 
   return(
@@ -37,42 +43,13 @@ function HistoryLog({plantName, navigation}) {
       
       <ScrollView style={{ marginTop: 25, marginBottom: 25, width: '100%'}} contentContainerStyle={{justifyContent: 'center',
     alignItems: 'center'}}>
-        <Pressable style={styles.buttons} onPress={navigateToLog}>
-          <Text style={styles.buttonText}>2023-05-20</Text>
+      {plantState.history.map(timestamp => 
+
+        <Pressable style={styles.buttons} onPress={() => navigateToLog(moment(timestamp).valueOf())}>
+          <Text style={styles.buttonText}>{timestamp}</Text>
         </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-21</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-22</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-23</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-24</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-25</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-26</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-27</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-28</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-29</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-30</Text>
-        </Pressable>
-        <Pressable style={styles.buttons}>
-          <Text style={styles.buttonText}>2023-05-31</Text>
-        </Pressable>
+        
+      )}
       </ScrollView>
 
     </View>

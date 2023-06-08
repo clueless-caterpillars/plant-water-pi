@@ -2,6 +2,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import mainReducer from './src/redux';
+
 import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 import axios from 'axios';
@@ -17,6 +22,10 @@ Amplify.configure(awsExports);
 import { withAuthenticator } from '@aws-amplify/ui-react-native';
 
 const Stack = createNativeStackNavigator();
+
+let mainStore = configureStore({
+  reducer: mainReducer
+})
 
 const API_URL = Constants.manifest.extra.API_URL
 
@@ -54,23 +63,22 @@ function App() {
   }
 
   return (
-    <NavigationContainer>
-      <NativeBaseProvider>
-        <Stack.Navigator
-          initialRouteName='Home'
-          screenOptions={navigatorStyleOptions}
-        >
-          <Stack.Screen name='Home' component={Home} />
-          <Stack.Screen name='Plant' component={Plant} />
-          <Stack.Screen name='History' component={HistoryLog} />
-          <Stack.Screen name='Log' component={Log} />
-          {/* <Plant /> */}
-          {/* <HistoryLog plantName={'My Plant'} /> */}
-          {/* <Log plantName={`My Plant`} /> */}
-        </Stack.Navigator>
-      </NativeBaseProvider>
-    </NavigationContainer>
-
+    <Provider store={mainStore} > 
+      <NavigationContainer>
+        <NativeBaseProvider>
+            <Stack.Navigator 
+              initialRouteName='Home'
+              screenOptions={navigatorStyleOptions}
+            >
+              <Stack.Screen name='Home' component={Home} />
+              <Stack.Screen name='Plant' component={Plant} />
+              <Stack.Screen name='History' component={HistoryLog} />
+              <Stack.Screen name='Log' component={Log} />
+       
+            </Stack.Navigator>
+        </NativeBaseProvider>      
+      </NavigationContainer>
+    </Provider>
   );
 }
 

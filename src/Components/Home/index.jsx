@@ -38,8 +38,6 @@ const videos = [
   bgVideo
 ]
 
-
-
 function Home ({navigation}) {
 
     // state variables for local authentication
@@ -75,7 +73,6 @@ function Home ({navigation}) {
         );
     }
 
-
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const [videoIdx, setVideoIdx] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -101,29 +98,6 @@ function Home ({navigation}) {
     return null;
   }
 
-  // const fadeOutVideo = async (remainingTime) => {
-  //   console.log('fading out!')
-  //   Animated.timing(fadeAnim, {
-  //     toValue: 0,
-  //     duration: remainingTime,
-  //     useNativeDriver: true
-  //   }).start();      
-  // }
-
-//   const fadeInVideo = async () => {
-//     console.log('fading in!')
-//     Animated.timing(fadeAnim, {
-//       toValue: 1,
-//       duration: 3000,
-//       useNativeDriver: true,
-//     }).start();      
-// }
-
-// const fadeVideo = async () => {
-//   fadeOutVideo();
-//   setTimeout(fadeInVideo, 1500)
-// }
-
   const handleVideoStatus = (videoStatus) => {
     if(videoStatus.didJustFinish){
       // console.log('video finished')
@@ -144,7 +118,7 @@ function Home ({navigation}) {
 
   return (
     <View style={[styles.mainContainer]}>
-      {/* <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} /> */}
+//       <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
       <Animated.View style={[videoStyle.bgVideo, {opacity: fadeAnim}]}>
         <Video 
           ref={null}

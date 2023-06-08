@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, Montserrat_400Regular, Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
 import { Table, Row} from "react-native-table-component";
 import styles from "../../styles";
+import axios from "axios";
+import moment from "moment";
+import { useSelector, useDispatch } from "react-redux";
+import plantsSlice from "../../redux/plantsSlice";
 
 const bgImage = require('../../../assets/homebg.jpg');
 const logo = require('../../../assets/PlantPalLogo.png');
@@ -13,37 +17,31 @@ const tableHeaders = [
   'Time',
   'Soil',
   'Temp',
-  'Water'
+  'Humid'
 ]
 
-const fakeData = [
-  ['0100', 50, 70, null],
-  ['0200', 48, 71, null],
-  ['0300', 47, 72, null],
-  ['0400', 65, 73, 1],
-  ['0500', 68, 74, null],
-  ['0600', 50, 70, null],
-  ['0700', 48, 71, null],
-  ['0800', 47, 72, null],
-  ['0900', 65, 73, 1],
-  ['1000', 68, 74, null],
-  ['1100', 50, 70, null],
-  ['1200', 48, 71, null],
-  ['1300', 47, 72, null],
-  ['1400', 65, 73, 1],
-  ['1500', 68, 74, null],
-  ['1600', 50, 70, null],
-  ['1700', 48, 71, null],
-  ['1800', 47, 72, null],
-  ['1900', 65, 73, 1],
-  ['2000', 68, 74, null],
-  ['2100', 50, 70, null],
-  ['2200', 48, 71, null],
-  ['2300', 47, 72, null],
-  ['2400', 65, 73, 1],
-]
+function Log({route, navigation}){
 
-function Log({plantName}){
+  const {timestamp} = route.params;
+  const plantsState = useSelector(state => state.plants);
+  const dispatch = useDispatch();
+  const {updateLogTableData} = plantsSlice.actions;
+
+  const fetchLogData = () => async() => {
+    let logData = axios
+      .get(`http://ec2-18-236-102-112.us-west-2.compute.amazonaws.com:3001/status/day?date=${timestamp}`)
+      .then(response => response.data);
+
+    return logData;
+  }
+
+  useEffect(() => {
+    dispatch(fetchLogData())
+    .then(logData => {
+      dispatch(updateLogTableData(logData))
+    })
+  }, [])
+  
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -54,42 +52,45 @@ function Log({plantName}){
     return null;
   }
 
+  let formattedDay = new Date(timestamp).toDateString();
+
   return(
-<View style={styles.mainContainer}>
+    <View style={styles.mainContainer}>
       <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} />
       <LinearGradient 
         colors={['rgba(126, 216, 87, 0.6)', 'rgba(0, 151, 178, 0.6)']}
         style={styles.gradient}
       />
 
-      <View style={{marginTop: 100, alignItems: 'center', justifyContent: 'center', marginBottom: 0}}>
-        <Text style={styles.name}>2023-05-01</Text>
+      <View style={{marginTop: 100, alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={[styles.name, {textAlign: 'center', fontSize: 36}]}>{formattedDay}</Text>
         <Text style={styles.label}>{`My Plant`}</Text>        
       </View>
       
-      <ScrollView>
-        <Table borderStyle={{
-          borderColor: 'white',
-          borderWidth: 1,
-          color: 'white',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }} style={{margin: 25,}}>
-          <Row data={tableHeaders} textStyle={{color: 'white', textAlign: 'center', padding: 5, fontFamily:  'Montserrat_600SemiBold', fontSize: 20}} style={{backgroundColor: 'rgba(0, 0, 0, 0.1)'}} />
-          {
-            fakeData.map((data, idx) => (
-              <Row 
-                key={idx}
-                data={data}
-                style={idx%2 ? tableStyle.oddRow : tableStyle.evenRow}
-                textStyle={tableStyle.text}
-              />
-            ))
-          }
+      <View style={{height: '62%', margin: 25}}>
+        <Table borderStyle={tableStyle.borders}>
+          <Row data={tableHeaders} textStyle={tableStyle.headers} style={{backgroundColor: 'rgba(0, 0, 0, 0.1)'}} />
+          <ScrollView>
+            {
+              plantsState.logTableData.map((data, idx) => (
+                <Row 
+                  key={idx}
+                  data={[
+                    moment(data.timeStamp).format('h:mm a'), 
+                    data.soilMoisture?.toFixed(2), 
+                    data.temperature?.toFixed(2), 
+                    data.humidity?.toFixed(2)
+                  ]}
+                  style={idx%2 ? tableStyle.oddRow : tableStyle.evenRow}
+                  borderStyle={tableStyle.borders}
+                  textStyle={tableStyle.text}
+                />
+              ))
+            }            
+          </ScrollView>
+
         </Table>        
-      </ScrollView>
-
-
+      </View>
     </View>
   )
 }
@@ -107,6 +108,20 @@ const tableStyle = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     padding: 5
+  },
+  headers: {
+    color: 'white', 
+    fontFamily: 'Montserrat_600SemiBold', 
+    fontSize: 20,
+    textAlign: 'center', 
+    padding: 5, 
+  },
+  borders: {
+    borderColor: 'white',
+    borderWidth: 1,
+    color: 'white',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
