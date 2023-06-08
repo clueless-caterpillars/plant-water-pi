@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Video, ResizeMode } from 'expo-av'
 
 // required for authentication state
-import * as LocalAuthentication from 'expo-local-authentication';
+// import * as LocalAuthentication from 'expo-local-authentication';
 
 // signup function dependencies
 import { Auth, Hub } from 'aws-amplify';
@@ -24,39 +24,81 @@ const videos = [
   bgVideo2
 ]
 
-function Home({ navigation }) {
+function Signup({ navigation }) {
 
-  // state variables for local authentication
-  const [isBiometricsSupported, setIsBioMetricsSupported] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // // state variables for local authentication
+  // const [isBiometricsSupported, setIsBioMetricsSupported] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // check if device hardware supports biometrics
-  useEffect(() => {
-    (async () => {
-      const compatible = await LocalAuthentication.hasHardwareAsync();
-      setIsBioMetricsSupported(compatible);
-    })();
-  });
+  // // check if device hardware supports biometrics
+  // useEffect(() => {
+  //   (async () => {
+  //     const compatible = await LocalAuthentication.hasHardwareAsync();
+  //     setIsBioMetricsSupported(compatible);
+  //   })();
+  // });
 
-  // actual authentication function here
-  function onAuthenticate() {
-    const auth = LocalAuthentication.authenticateAsync({
-      promptMessage: 'Authenticate',
-      fallbackLabel: 'Enter Passcode',
-    });
-    auth.then(result => {
-      if (!result.success) {
-        console.log('BIOMETRIC LOGIN NOT AUTHORIZED');
-        setIsAuthenticated(false);
-        return;
-      }
-      else {
-        setIsAuthenticated(result.success);
-        navigateToPlant();
-      }
-      console.log(result);
+  // // actual authentication function here
+  // function onAuthenticate() {
+  //   const auth = LocalAuthentication.authenticateAsync({
+  //     promptMessage: 'Authenticate',
+  //     fallbackLabel: 'Enter Passcode',
+  //   });
+  //   auth.then(result => {
+  //     if (!result.success) {
+  //       console.log('NOT AUTHORIZED');
+  //       setIsAuthenticated(false);
+  //       return;
+  //     }
+  //     else {
+  //       setIsAuthenticated(result.success);
+  //       navigateToPlant();
+  //     }
+  //     console.log(result);
+  //   }
+  //   );
+  // }
+
+  // signup function here
+  async function signUpWithCognito() {
+    try {
+      const { user } = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email,
+          phone_number
+        },
+        autoSignIn: {
+          enabled: true,
+        }
+      });
+      console.log(user);
+    } catch (error) {
+      console.log('ERROR SIGNING UP WITH COGNITO: ', error);
     }
-    );
+  }
+
+  // resend confirmation code function here
+  async function resendConfirmationCode() {
+    try {
+      await Auth.resendSignUp(username);
+      console.log('SIGNUP CONFIRMATION CODE RESENT TO USER');
+    } catch (error) {
+      console.log('ERROR RESENDING CONFIRMATION CODE TO USER: ', error);
+    }
+  }
+
+  function listenToAutoSignInEvent() {
+    Hub.listen('auth', ({ payload }) => {
+      const { event } = payload;
+      if (event === 'autoSignIn') {
+        const user = payload.data;
+        // assign user
+      } else if (event === 'autoSignIn_failure') {
+        // redirect to sign in page (HOME)
+      }
+    })
   }
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
@@ -125,10 +167,6 @@ function Home({ navigation }) {
     navigation.navigate('Plant');
   }
 
-  const navigateToSignup = () => {
-    navigation.navigate('Signup');
-  }
-
   return (
     <View style={[styles.mainContainer]}>
       {/* <Image source={bgImage} contentPosition={{right: 0}} style={styles.bgImage} /> */}
@@ -169,10 +207,10 @@ function Home({ navigation }) {
       </View>
 
       <View style={styles.componentContainer}>
-        <Pressable style={styles.login} onPress={onAuthenticate}>
+        {/* <Pressable style={styles.login} onPress={onAuthenticate}>
           <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
-        <Pressable style={styles.signUp} onPress={navigateToSignup}>
+        </Pressable> */}
+        <Pressable style={styles.signUp} onPress={signUpWithCognito}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </Pressable>
       </View>
@@ -180,4 +218,4 @@ function Home({ navigation }) {
   )
 }
 
-export default Home;
+export default Signup;

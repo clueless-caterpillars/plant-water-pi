@@ -7,13 +7,43 @@ import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import { Damion_400Regular } from "@expo-google-fonts/damion";
 
 import Home from './src/Components/Home';
+import Signup from './src/Components/Signup';
 import Plant from './src/Components/PlantInfo';
 import HistoryLog from './src/Components/History';
 import Log from './src/Components/Log';
 
+import { Amplify, Auth } from 'aws-amplify';
+import { withAuthenticator } from '@aws-amplify/ui-react';
+// import '@aws-amplify/ui-react/styles.css';
+
+// generate Amplify settings object for Cognito user pool 
+Amplify.configure({
+  Auth: {
+    identityPoolId: 'us-west-2:5ae0523b-26ad-4ee1-b08a-2de7bd2cd97b',
+    region: 'us-west-2',
+    userPoolId: 'us-west-2_iexBVW8r0',
+    userPoolWebClientId: '4r8dtn8t1irf8b4i5gnf64pt8c',
+    mandatorySignIn: false,
+    signUpVerificationMethod: 'code',
+    oauth: {
+      domain: 'https://plant-pal.auth.us-west-2.amazoncognito.com',
+      scope: [
+        'email',
+        'openid',
+        'phone',
+      ],
+      redirectSignIn: 'exp://localhost:19000/--/',
+      responseType: 'code',
+    },
+  },
+});
+
+const currentConfig = Auth.configure();
+
+
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+function App({ signOut, user }) {
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -42,8 +72,8 @@ export default function App() {
           initialRouteName='Home'
           screenOptions={navigatorStyleOptions}
         >
-          {/* <Stack.Screen name='Auth' component={Auth} /> */}
           <Stack.Screen name='Home' component={Home} />
+          <Stack.Screen name='Signup' component={Signup} />
           <Stack.Screen name='Plant' component={Plant} />
           <Stack.Screen name='History' component={HistoryLog} />
           <Stack.Screen name='Log' component={Log} />
@@ -65,3 +95,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default withAuthenticator(App);
