@@ -72,6 +72,7 @@ function Plant({navigation}){
       setIsWatering(true);
       setTimeout(() => {
         setIsWatering(false);
+        handlePlantData();
       }, 30000);
     } catch (e) {
       setIsWatering(true);
@@ -88,7 +89,7 @@ function Plant({navigation}){
 
     //Need to update with current measurements.
     //Use a GET method after watering is done.
-    handlePlantData();
+
   }
 
   const handleChangeName = (newName) => {
