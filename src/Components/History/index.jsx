@@ -43,9 +43,9 @@ function HistoryLog({plantName, navigation}) {
       
       <ScrollView style={{ marginTop: 25, marginBottom: 25, width: '100%'}} contentContainerStyle={{justifyContent: 'center',
     alignItems: 'center'}}>
-      {plantsState.history.map(timestamp => 
+      {plantsState.history.map((timestamp, idx) => 
 
-        <Pressable style={styles.buttons} onPress={() => navigateToLog(moment(timestamp).valueOf())}>
+        <Pressable key={idx} style={styles.buttons} onPress={() => navigateToLog(moment(timestamp).valueOf())}>
           <Text style={styles.buttonText}>{timestamp}</Text>
         </Pressable>
         
