@@ -62,11 +62,13 @@ function Plant({navigation}){
   const handleWaterNow = async() => {
     //Send request to Raspberry Pi to turn on.
     const state_url = `${API_URL}/state`;
+    const token = 'eyJraWQiOiJ4dmVUOEE3RWtxbHprZDlcLzlXbFVXeExnV2Z2TDE3RG9hOCs5SVlOYmlzMD0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxNmVlN2IyZi1lMzNiLTRjZTctYTZjMS01MzAyNTc4MzIwY2IiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9sbE5IQ2hzWFgiLCJjbGllbnRfaWQiOiJyYWYwYTZqaGNsbDRoYWFtZ2R1aGkyYnZwIiwib3JpZ2luX2p0aSI6IjQyMTQ2ZDI0LTJkNDYtNDE3NS1hNmRiLTQ3NDc3YmI0YWMyNCIsImV2ZW50X2lkIjoiZTIyYjJhODgtOWQ4ZC00ZmJiLTgwODctNWRlOGVmNzMwNTQ2IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTY4NjMzMjYwMCwiZXhwIjoxNjg2MzM2MjAwLCJpYXQiOjE2ODYzMzI2MDAsImp0aSI6ImYzZTdiODJlLTU3NmEtNDlkNS04MDZiLWY1Njc0OWM4NTZiMCIsInVzZXJuYW1lIjoicGxhbnQtcGFsLXVzZXIifQ.UvAWDDjisbes9Rl501F-e-yGUwqnXa_KhsSzQbfKWyVTqnX1Rf7yhrq0_H6hv3H_bTJHpQcj2miVv8sVG6ZXS3ym2m6ln0LDxfZxKtO63hI_MENh_CputOPpwQRHv9qGUAG0S8cVLbSiSYgpAYJg-UFfN71M1w09IC6j2ZcaNJ5bC3zICt-z8Vo5Z_j6xPzVr8CNAd_GSLzJFS4tZaLc4d2q6Vpu3l7XA8D2LKDU-F3gMmhpTQe0OkZ3UvADjrhGJkjsppQKZFba2ifP8ytVzvMkaYinyvdMmkowe_Cz-DiPJRj_U6Ncj1N38UqEn5K1_3x1_8upje0Xc57YSe6mXQ';
     try {
       let response = await axios.post(state_url, null, {
         params: {
           state: 'on'
         },
+        headers: {Authorization: `Bearer ${token}`},
       })
       setIsWatering(true);
       setTimeout(() => {
