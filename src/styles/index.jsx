@@ -1,10 +1,13 @@
 import { StyleSheet } from "react-native";
 // import { fadeAnim } from "../Components/Home";
+import { useWindowDimensions } from "react-native";
+
+const {height, width} = useWindowDimensions();
 
 const styles =  StyleSheet.create({
   mainContainer: {
-    width: '100%',
-    height: '100%'
+    width: width,
+    height: height,
   },
   componentContainer: {
     flex: 1,

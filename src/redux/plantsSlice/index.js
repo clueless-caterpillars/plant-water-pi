@@ -6,7 +6,8 @@ const plantsSlice = createSlice({
   initialState: {
     plant: {},
     history: [],
-    logTableData: []
+    logTableData: [],
+    name: 'My Plant'
   },
   reducers: {
     updateMostRecentPlantData(state, action){
@@ -36,6 +37,9 @@ const plantsSlice = createSlice({
         else return 0
       })
       state.logTableData = sortedLogData;
+    },
+    updateName(state, action){
+      state.name = action.payload;
     }
   }
 })

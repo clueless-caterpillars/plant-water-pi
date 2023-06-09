@@ -14,7 +14,7 @@ const logo = require('../../../assets/PlantPalLogo.png');
 
 function HistoryLog({plantName, navigation}) {
 
-  const plantState = useSelector(state => state.plants);
+  const plantsState = useSelector(state => state.plants);
 
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
@@ -38,12 +38,12 @@ function HistoryLog({plantName, navigation}) {
 
       <View style={{marginTop: 100, alignItems: 'center', justifyContent: 'center', marginBottom: 0}}>
         <Text style={styles.name}>History Logs</Text>
-        <Text style={styles.label}>{`My Plant`}</Text>        
+        <Text style={styles.label}>{plantsState.name}</Text>        
       </View>
       
       <ScrollView style={{ marginTop: 25, marginBottom: 25, width: '100%'}} contentContainerStyle={{justifyContent: 'center',
     alignItems: 'center'}}>
-      {plantState.history.map(timestamp => 
+      {plantsState.history.map(timestamp => 
 
         <Pressable style={styles.buttons} onPress={() => navigateToLog(moment(timestamp).valueOf())}>
           <Text style={styles.buttonText}>{timestamp}</Text>

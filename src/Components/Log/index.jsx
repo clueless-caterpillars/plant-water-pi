@@ -69,7 +69,7 @@ function Log({route, navigation}){
 
       <View style={{marginTop: 100, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={[styles.name, {textAlign: 'center', fontSize: 36}]}>{formattedDay}</Text>
-        <Text style={styles.label}>{`My Plant`}</Text>        
+        <Text style={styles.label}>{plantsState.name}</Text>        
       </View>
       
       <View style={{height: '62%', margin: 25}}>

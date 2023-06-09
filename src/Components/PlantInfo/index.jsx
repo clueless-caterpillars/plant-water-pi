@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Pressable, StyleSheet } from "react-native";
+import { Text, View, Pressable, StyleSheet, Modal, TextInput, Dimensions } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Progress, Box, Spinner, HStack } from 'native-base';
@@ -23,12 +23,12 @@ const API_URL = Constants.manifest.extra.API_URL
 
 function Plant({navigation}){
   
-  const [isWatering, setIsWatering] = useState(false);
   const plantsState = useSelector(state => state.plants);
   const dispatch = useDispatch();
-  const { updateMostRecentPlantData, updatePlantHistory } = plantsSlice.actions;
-
-  const [plantIdx, setPlantIdx] = useState(0);
+  const { updateMostRecentPlantData, updatePlantHistory, updateName } = plantsSlice.actions;
+  const [isWatering, setIsWatering] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [tempName, setTempName] = useState(plantsState.name);
 
   const fetchPlantData = () => async() => {
     let plantInfo = axios
@@ -86,6 +86,16 @@ function Plant({navigation}){
 
   }
 
+  const handleChangeName = (newName) => {
+    dispatch(updateName(newName))
+    setShowModal(!showModal)
+  }
+
+  const handleToggleModal = () => {
+    console.log('handle toggle modal')
+    setShowModal(!showModal)
+  }
+
   // fetches all plant data and sets it to state on 'componentDidMount'
   useEffect(() => {
     handlePlantData();
@@ -107,7 +117,7 @@ function Plant({navigation}){
   let formattedTime = moment(plantsState.plant.timeStamp).format("ddd, MMM D YYYY, h:mm a");
 
   return(
-    <View style={styles.mainContainer}>
+    <View style={[styles.mainContainer, {minHeight: Math.round(Dimensions.get('window').height), marginTop: -50 }]}>
       
       {
         isWatering ? 
@@ -128,7 +138,7 @@ function Plant({navigation}){
       />
           
       <View style={styles.componentContainer}>
-        <Text style={[styles.name, {textAlign: 'center'}]}>{`My Plant`}</Text> 
+        <Text style={[styles.name, {textAlign: 'center'}]}>{plantsState.name}</Text> 
         <Text style={[styles.label, {textAlign: 'center', fontSize: 18}]}>{`Last Updated: ${formattedTime}`}</Text>
       </View>
 
@@ -205,7 +215,7 @@ function Plant({navigation}){
         </Pressable>
         }
         
-        <Pressable style={styles.buttons}>
+        <Pressable style={styles.buttons} onPress={handleToggleModal}>
           <Text style={styles.buttonText}>Edit Plant</Text>
         </Pressable>
         
@@ -214,6 +224,24 @@ function Plant({navigation}){
         </Pressable>
         
       </View>
+      
+      <Modal visible={showModal}  transparent={true} onRequestClose={() => setShowModal(!showModal)}>
+        <View style={videoStyle.centeredView}>
+          <View style={videoStyle.modalView}>
+
+            <TextInput 
+              value={tempName} 
+              onChangeText={setTempName}
+              style={{borderWidth: 1, padding: 10, width: 200, fontSize: 18}} 
+            /> 
+
+            <Pressable style={styles.buttons} onPress={() => handleChangeName(tempName)}>
+              <Text style={[styles.buttonText, {color: 'black'}]}>Apply</Text>
+            </Pressable> 
+
+          </View>
+        </View>
+      </Modal>             
 
     </View>
   )
@@ -227,6 +255,47 @@ const videoStyle = StyleSheet.create({
     width: '100%',
     height: '100%',
     opacity: 1
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   }
 })
 
