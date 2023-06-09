@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, LogBox } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, Montserrat_400Regular, Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
@@ -24,13 +24,11 @@ const tableHeaders = [
 const API_URL = Constants.manifest.extra.API_URL
 
 function Log({route, navigation}){
-
+  LogBox.ignoreAllLogs();
   const {timestamp} = route.params;
   const plantsState = useSelector(state => state.plants);
   const dispatch = useDispatch();
   const {updateLogTableData} = plantsSlice.actions;
-
-  
 
   const fetchLogData = () => async() => {
     let logData = axios
@@ -93,7 +91,6 @@ function Log({route, navigation}){
               ))
             }            
           </ScrollView>
-
         </Table>        
       </View>
     </View>
